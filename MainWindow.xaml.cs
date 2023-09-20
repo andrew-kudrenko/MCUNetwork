@@ -8,5 +8,10 @@ namespace MCUNetwork
         {
             InitializeComponent();
         }
+
+        private void MicrocontrollerView_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

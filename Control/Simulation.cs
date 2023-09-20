@@ -1,7 +1,6 @@
-﻿using MCUNetwork.Control;
-using MCUNetwork.Models;
+﻿using MCUNetwork.Models;
 
-namespace MCUNetwork.Simulation
+namespace MCUNetwork.Control
 {
     internal class Simulation
     {

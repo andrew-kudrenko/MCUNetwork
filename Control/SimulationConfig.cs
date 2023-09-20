@@ -1,4 +1,4 @@
-﻿namespace MCUNetwork.Simulation
+﻿namespace MCUNetwork.Control
 {
     internal class SimulationConfig
     {
