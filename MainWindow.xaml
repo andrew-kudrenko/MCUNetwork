@@ -20,28 +20,10 @@
         <Grid Grid.Row="0" Grid.Column="0" Background="Bisque">
             <Canvas Name="SimulationScene" Background="White" Margin="10">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <view:MicrocontrollerView Width="50" Height="50" />
-                        <StackPanel Orientation="Horizontal">
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                        </StackPanel>
-                    </StackPanel>
-
                     <view:ControlCenterView Width="100" Height="100" />
 
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <view:MicrocontrollerView Width="50" Height="50" />
-                        <StackPanel Orientation="Horizontal">
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                            <view:Message Width="35" />
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <view:MicrocontrollerView Microcontroller="{Binding Microcontroller}" Width="50" />
                     </StackPanel>
                 </StackPanel>
             </Canvas>

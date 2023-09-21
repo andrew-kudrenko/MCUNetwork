@@ -4,9 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MCUNetwork.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="150">
-    <StackPanel Orientation="Horizontal">
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="150">
+    <StackPanel Orientation="Vertical">
         <Image Name="Image" Source="/Assets/Microcontroller.png" />
+        <ListView x:Name="MessageList" ItemsSource="{Binding Path=Messages}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:Message Width="30" Height="30" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackPanel>
 </UserControl>

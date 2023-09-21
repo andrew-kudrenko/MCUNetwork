@@ -1,6 +1,6 @@
 ﻿namespace MCUNetwork.Models
 {
-    internal class Message
+    public class Message
     {
         public int Size { get; private set; }
 

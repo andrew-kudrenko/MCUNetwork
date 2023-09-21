@@ -1,6 +1,6 @@
 ﻿namespace MCUNetwork.Models
 {
-    class ControlCenter
+    public class ControlCenter
     {
         private readonly int _serviceDelayMilliseconds = 1_000;
         private readonly Queue<Microcontroller> _serviceDemandedSatellites = new();

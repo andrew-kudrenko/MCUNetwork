@@ -1,9 +1,13 @@
 ﻿namespace MCUNetwork.Models
 {
-    internal class MicrocontrollerMemory
+    public class MicrocontrollerMemory
     {
         public delegate void ServiceDemandedHandler();
-        public event ServiceDemandedHandler OnServiceDemanded = null!;
+        public delegate void MessageHandler(Message message);
+
+        public event MessageHandler? OnMessageReceived;
+        public event MessageHandler? OnMessageIgnored;
+        public event ServiceDemandedHandler? OnServiceDemanded;
 
         private readonly double _size;
         private readonly double _serviceThreshold;
@@ -31,8 +35,12 @@
                     OnServiceDemanded?.Invoke();
                 }
 
+                OnMessageReceived?.Invoke(message);
+
                 return true;
             }
+
+            OnMessageIgnored?.Invoke(message);
 
             return false;
         }

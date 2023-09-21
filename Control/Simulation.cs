@@ -2,7 +2,7 @@
 
 namespace MCUNetwork.Control
 {
-    internal class Simulation
+    public class Simulation
     {
         private ControlCenter _controlCenter = new();
         private SimulationConfig _config;
@@ -11,7 +11,7 @@ namespace MCUNetwork.Control
         public Simulation()
         {
             _config = new() { 
-                MemorySize = 1000, 
+                MemorySize = 1_000, 
                 MessageLength = 200, 
                 Period = 20, 
                 SatellitesCount = 5, 
@@ -25,13 +25,14 @@ namespace MCUNetwork.Control
 
         public void Run()
         {
-            _clock.Run();
+            _clock.Run(86_400, _config.ServiceDelay);
         }
 
         private void Init()
         {
             for (int i = 0; i < _config.SatellitesCount; i++) {
-                _controlCenter.AddSatellite(new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio));
+                var satellite = new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio);
+                _controlCenter.AddSatellite(satellite);
             }
 
             _clock.OnNextTick += Update;

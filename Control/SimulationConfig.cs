@@ -1,6 +1,6 @@
 ﻿namespace MCUNetwork.Control
 {
-    internal class SimulationConfig
+    public class SimulationConfig
     {
         public required int SatellitesCount { get; set; }
         public required int Period { get; set; }

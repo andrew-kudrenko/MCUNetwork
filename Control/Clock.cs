@@ -1,15 +1,16 @@
 ﻿namespace MCUNetwork.Control
 {
-    class Clock
+    public class Clock
     {
         public delegate void NextTickHandler(long elapsedTime);
         public event NextTickHandler OnNextTick = null!;
+        public event NextTickHandler OnEnd = null!;
 
         public int Delay { get; set; } = 500;
 
         private bool _isRunning = false;
 
-        public void Run()
+        public void Run(long duration, int delta)
         {
             if (_isRunning) 
             {
@@ -21,9 +22,19 @@
 
             while (_isRunning)
             {
-                OnNextTick.Invoke(elapsedTime);
-                Thread.Sleep(Delay);
+                if (elapsedTime < duration)
+                {
+                    OnNextTick.Invoke(elapsedTime);
+                    Thread.Sleep(Delay);
+                } else
+                {
+                    _isRunning = false;
+                }
+
+                elapsedTime += delta;
             }
+
+            OnEnd.Invoke(elapsedTime);
         }
 
         public void Stop() => _isRunning = false;

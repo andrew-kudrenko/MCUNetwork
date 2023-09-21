@@ -1,6 +1,6 @@
 ﻿namespace MCUNetwork.Models
 {
-    internal class Microcontroller
+    public class Microcontroller
     {
         public readonly MicrocontrollerMemory Memory;
 
