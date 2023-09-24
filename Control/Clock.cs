@@ -2,41 +2,76 @@
 {
     public class Clock
     {
+        public delegate void ScheduledActionHandler();
         public delegate void NextTickHandler(long elapsedTime);
-        public event NextTickHandler OnNextTick = null!;
-        public event NextTickHandler OnEnd = null!;
 
-        public int Delay { get; set; } = 500;
+        public event NextTickHandler? OnNextTick;
+        public event NextTickHandler? OnEnd;
+
+        public int Delay { get; set; } = 1_000;
 
         private bool _isRunning = false;
+        private long _elapsedTime = 0;
 
         public void Run(long duration, int delta)
         {
-            if (_isRunning) 
+            if (_isRunning)
             {
                 throw new InvalidOperationException("You have already started a clock");
             }
 
             _isRunning = true;
-            long elapsedTime = 0;
+            _elapsedTime = 0;
 
             while (_isRunning)
             {
-                if (elapsedTime < duration)
+                if (_elapsedTime < duration)
                 {
-                    OnNextTick.Invoke(elapsedTime);
+                    OnNextTick?.Invoke(_elapsedTime);
                     Thread.Sleep(Delay);
                 } else
                 {
                     _isRunning = false;
                 }
 
-                elapsedTime += delta;
+                _elapsedTime += delta;
             }
 
-            OnEnd.Invoke(elapsedTime);
+            OnEnd?.Invoke(_elapsedTime);
         }
 
-        public void Stop() => _isRunning = false;
+        public void Stop()
+        {
+            _isRunning = false;
+            
+            OnEnd?.Invoke(_elapsedTime);
+            OnNextTick = null!;
+        }
+
+        public void ExecuteUntil(long each, long until, ScheduledActionHandler action) => ScheduleAction(each, until, action);
+
+        public void ExecuteAfter(long ticks, ScheduledActionHandler action) => ScheduleAction(1, ticks + _elapsedTime, action);
+
+        private void ScheduleAction(long each, long until, ScheduledActionHandler action)
+        {
+            NextTickHandler handler = null!;
+
+            long last = _elapsedTime;
+
+            handler = elapsed =>
+            {
+                if (elapsed - each >= last)
+                {
+                    action.Invoke();
+
+                    if (elapsed >= until)
+                    {
+                        OnNextTick -= handler;
+                    }
+                }
+            };
+
+            OnNextTick += handler;
+        }
     }
 }
