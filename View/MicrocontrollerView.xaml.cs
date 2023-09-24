@@ -7,39 +7,35 @@ namespace MCUNetwork.View
 {
     public partial class MicrocontrollerView : UserControl
     {
-        public static readonly DependencyProperty MicrocontrollerProperty;
-
-        public Microcontroller Microcontroller { 
+        public static readonly DependencyProperty MicrocontrollerProperty = DependencyProperty.Register(
+            "Microcontroller",
+            typeof(Microcontroller),
+            typeof(MicrocontrollerView),
+            new PropertyMetadata(null, new(OnChangeMicrocontroller))
+        );
+        public Microcontroller Microcontroller {
             get => (Microcontroller) GetValue(MicrocontrollerProperty); 
-            set => SetMicrocontroller(value); 
+            set => SetValue(MicrocontrollerProperty, value); 
         }
-
-        public ObservableCollection<Models.Message> Messages { get; set; } = new();
-
-        static MicrocontrollerView()
-        {
-            MicrocontrollerProperty = DependencyProperty.Register(
-                "Microcontroller", 
-                typeof(Microcontroller), 
-                typeof(MicrocontrollerView)
-            );
-        }
+        public readonly ObservableCollection<Models.Message> Messages = new() { new(100), new(165) };
 
         public MicrocontrollerView()
         {
             InitializeComponent();
+
             MessageList.ItemsSource = Messages;
         }
 
-        private void SetMicrocontroller(Microcontroller microcontroller)
+        private static void OnChangeMicrocontroller(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            Messages.Clear();
-            
-            SetValue(MicrocontrollerProperty, microcontroller);
+            if (sender is MicrocontrollerView view)
+            {
+                var microcontroller = (Microcontroller) args.NewValue;
 
-            microcontroller.Memory.OnMessageReceived += Messages.Add;
-            microcontroller.Memory.OnMessageIgnored += Messages.Add;
+                view.Messages.Clear();
 
+                microcontroller.Memory.OnMessageReceived += view.Messages.Add;
+            }
         }
     }
 }

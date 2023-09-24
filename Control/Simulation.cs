@@ -4,7 +4,8 @@ namespace MCUNetwork.Control
 {
     public class Simulation
     {
-        private ControlCenter _controlCenter = new();
+        public readonly ControlCenter ControlCenter = new();
+        
         private SimulationConfig _config;
         private Clock _clock = new();
 
@@ -30,17 +31,11 @@ namespace MCUNetwork.Control
 
         private void Init()
         {
-            for (int i = 0; i < _config.SatellitesCount; i++) {
+            for (int i = 0; i < _config.SatellitesCount; i++)
+            {
                 var satellite = new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio);
-                _controlCenter.AddSatellite(satellite);
+                ControlCenter.AddSatellite(satellite);
             }
-
-            _clock.OnNextTick += Update;
-        }
-
-        private void Update(long elapsedTime)
-        {
-
         }
     }
 }

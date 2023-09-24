@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MCUNetwork"
+        x:Name="Root"
         mc:Ignorable="d"
         xmlns:view="clr-namespace:MCUNetwork.View"
         Title="MainWindow" Height="450" Width="800">
@@ -16,15 +17,20 @@
             <ColumnDefinition Width="0.35*" />
         </Grid.ColumnDefinitions>
 
-        
         <Grid Grid.Row="0" Grid.Column="0" Background="Bisque">
             <Canvas Name="SimulationScene" Background="White" Margin="10">
-                <StackPanel Orientation="Vertical">
-                    <view:ControlCenterView Width="100" Height="100" />
-
-                    <StackPanel Orientation="Horizontal">
-                        <view:MicrocontrollerView Microcontroller="{Binding Microcontroller}" Width="50" />
-                    </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <view:ControlCenterView Width="80" Height="80" Margin="40" />
+                    
+                    <ListBox x:Name="SatellitesBox" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <view:MicrocontrollerView Microcontroller="{Binding}" Width="250" Height="50" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </StackPanel>
             </Canvas>
         </Grid>
@@ -32,7 +38,7 @@
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel>
                 <TextBox>Simulation Settings</TextBox>
-                <Button Name="RunButton">Run</Button>
+                <Button Name="RunButton" Content="Run" />
             </StackPanel>
         </Grid>
     </Grid>

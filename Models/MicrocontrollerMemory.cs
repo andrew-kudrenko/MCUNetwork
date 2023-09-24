@@ -14,7 +14,7 @@
         private readonly List<Message> _values = new(20);
         private double _busy = 0;
 
-        private double FreeSpace { get => _size - _busy; }
+        public double FreeSpace { get => _size - _busy; }
         private bool IsServiceTresholdReached { get => _busy >= _serviceThreshold; }
 
         public MicrocontrollerMemory(double memoryVolume, double thresholdRatio)

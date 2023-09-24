@@ -5,10 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="150">
-    <StackPanel Orientation="Vertical">
+             d:DesignHeight="200" d:DesignWidth="450">
+    <StackPanel Orientation="Horizontal">
         <Image Name="Image" Source="/Assets/Microcontroller.png" />
-        <ListView x:Name="MessageList" ItemsSource="{Binding Path=Messages}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ListView x:Name="MessageList" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <local:Message Width="30" Height="30" />
