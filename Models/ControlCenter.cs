@@ -4,7 +4,7 @@ namespace MCUNetwork.Models
 {
     public class ControlCenter
     {
-        public readonly ObservableCollection<Microcontroller> Satellites = new();
+        public readonly List<Microcontroller> Satellites = new();
 
         public void AddSatellite(Microcontroller satellite)
         {

@@ -13,11 +13,13 @@ namespace MCUNetwork.View
             typeof(MicrocontrollerView),
             new PropertyMetadata(null, new(OnChangeMicrocontroller))
         );
+
         public Microcontroller Microcontroller {
             get => (Microcontroller) GetValue(MicrocontrollerProperty); 
-            set => SetValue(MicrocontrollerProperty, value); 
+            set => SetValue(MicrocontrollerProperty, value);
         }
-        public readonly ObservableCollection<Models.Message> Messages = new() { new(100), new(165) };
+
+        public readonly ObservableCollection<Models.Message> Messages = new();
 
         public MicrocontrollerView()
         {
@@ -30,11 +32,18 @@ namespace MCUNetwork.View
         {
             if (sender is MicrocontrollerView view)
             {
-                var microcontroller = (Microcontroller) args.NewValue;
+                var microcontroller = (Microcontroller)args.NewValue;
 
-                view.Messages.Clear();
+                if (view.Messages.Count > 0)
+                {
+                    view.Messages.Clear();
+                }
 
-                microcontroller.Memory.OnMessageReceived += view.Messages.Add;
+                microcontroller.Memory.OnMessageReceived += m =>
+                {
+                    view.Messages.Add(m);
+                    view.FreeSpaceBar.Value = microcontroller.Memory.BusyAsPercents;
+                };
             }
         }
     }

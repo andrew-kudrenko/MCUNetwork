@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d"
+             x:Name="Root"
              d:DesignHeight="200" d:DesignWidth="450">
     <StackPanel Orientation="Horizontal">
-        <Image Name="Image" Source="/Assets/Microcontroller.png" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <Image Width="50" Height="50" Name="Image" Source="/Assets/Microcontroller.png" />
+            <TextBlock Text="Free Space" />
+            <ProgressBar x:Name="FreeSpaceBar" Minimum="0" Maximum="100" Height="15" />
+        </StackPanel>
         <ListView x:Name="MessageList" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

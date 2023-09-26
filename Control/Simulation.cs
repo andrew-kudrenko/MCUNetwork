@@ -4,12 +4,12 @@ namespace MCUNetwork.Control
 {
     public class Simulation
     {
-        public bool isRunning { get; private set; } = false;
+        public bool IsRunning { get; private set; } = false;
         public readonly ControlCenter ControlCenter = new();
         
-        private SimulationConfig _config;
-        private Clock _clock = new();
-        private readonly Random _random = new Random();
+        private readonly SimulationConfig _config;
+        private readonly Clock _clock = new();
+        private readonly Random _random = new();
 
         public Simulation()
         {
@@ -26,24 +26,18 @@ namespace MCUNetwork.Control
             Init();
         } 
 
-        public void Run()
+        public async Task Run()
         {
-            isRunning = true;
+            IsRunning = true;
 
-            Task.Factory.StartNew(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                // here will should be the clock's launching
-            });
-
-            _clock.ExecuteUntil(5, 50, SendMockMessage);
-
-            _clock.Run(86_400, _config.ServiceDelay);
+            _clock.ExecuteUntil(10, 10_000, SendMockMessage);
+            
+            await _clock.Run(86_400, _config.ServiceDelay);
         }
 
         public void Stop()
         {
-            isRunning = false;
+            IsRunning = false;
             _clock.Stop();
         }
 
@@ -58,16 +52,8 @@ namespace MCUNetwork.Control
 
         private void SendMockMessage()
         {
-            Console.WriteLine("Sending...");
-            var at = _random.Next(ControlCenter.Satellites.Count);
-            try
-            {
-                var isReceived = ControlCenter.Satellites[at].Memory.TryReceive(new(_random.Next(20) + 40));
-                Console.WriteLine($"Received mock message {isReceived}");
-            } catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to send {ex.Message}");
-            }
+            var at = _random.Next(ControlCenter.Satellites.Count)            
+            ControlCenter.Satellites[at].Memory.TryReceive(new(_random.Next(20) + 40));
         }
     }
 }

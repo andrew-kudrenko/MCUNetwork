@@ -13,7 +13,7 @@
         private bool _isRunning = false;
         private long _elapsedTime = 0;
 
-        public void Run(long duration, int delta)
+        public async Task Run(long duration, int delta)
         {
             if (_isRunning)
             {
@@ -28,7 +28,7 @@
                 if (_elapsedTime < duration)
                 {
                     OnNextTick?.Invoke(_elapsedTime);
-                    Thread.Sleep(Delay);
+                    await Task.Delay(Delay);
                 } else
                 {
                     _isRunning = false;

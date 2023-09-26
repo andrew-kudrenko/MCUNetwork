@@ -16,16 +16,15 @@ namespace MCUNetwork
         private void Init()
         {
             SatellitesBox.ItemsSource = Simulation.ControlCenter.Satellites;
-            RunButton.Click += (_, __) =>
+
+            RunButton.Click += async (sender, args) =>
             {
-                if (Simulation.isRunning)
+                if (Simulation.IsRunning)
                 {
                     Simulation.Stop();
-                    Console.WriteLine("Simulation has benn stopped");
                 } else
                 {
-                    Simulation.Run();
-                    Console.WriteLine("Simulation is running!");
+                    await Simulation.Run();
                 }
             };
         }
