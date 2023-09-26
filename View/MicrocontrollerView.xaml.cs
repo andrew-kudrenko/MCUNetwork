@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using MCUNetwork.Models;
 
 namespace MCUNetwork.View
@@ -39,10 +40,30 @@ namespace MCUNetwork.View
                     view.Messages.Clear();
                 }
 
-                microcontroller.Memory.OnMessageReceived += m =>
+                microcontroller.Memory.OnMessageReceived += message =>
                 {
-                    view.Messages.Add(m);
-                    view.FreeSpaceBar.Value = microcontroller.Memory.BusyAsPercents;
+                    view.Messages.Add(message);
+                    
+                    view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
+                    view.MemoryBar.Foreground = Brushes.Green;
+
+                    view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
+                };
+
+                microcontroller.Memory.OnServiceDemanded += () => 
+                {
+                    view.MemoryBar.Foreground = Brushes.Yellow;
+                };
+
+                microcontroller.Memory.OnMessageIgnored += message =>
+                {
+                    view.MemoryBar.Foreground = Brushes.Red;
+                };
+
+                microcontroller.Memory.OnServiceIsDone += () =>
+                {
+                    view.MemoryBar.Foreground = Brushes.Green;
+                    view.Messages.Clear();
                 };
             }
         }

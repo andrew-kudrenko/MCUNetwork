@@ -9,7 +9,11 @@ namespace MCUNetwork.Models
         public void AddSatellite(Microcontroller satellite)
         {
             Satellites.Add(satellite);
-            satellite.Memory.OnServiceDemanded += () => Service(satellite);
+            satellite.Memory.OnServiceDemanded += async () =>
+            {
+                await Task.Delay(2_000);
+                Service(satellite);
+            };
         }
 
         private List<Message> Service(Microcontroller satellite)

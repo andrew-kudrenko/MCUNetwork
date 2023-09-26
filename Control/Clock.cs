@@ -27,14 +27,14 @@
             {
                 if (_elapsedTime < duration)
                 {
-                    OnNextTick?.Invoke(_elapsedTime);
                     await Task.Delay(Delay);
+                    OnNextTick?.Invoke(_elapsedTime);
+                    _elapsedTime += delta;
                 } else
                 {
                     _isRunning = false;
                 }
 
-                _elapsedTime += delta;
             }
 
             OnEnd?.Invoke(_elapsedTime);

@@ -27,6 +27,8 @@ namespace MCUNetwork
                     await Simulation.Run();
                 }
             };
+
+            Simulation.Clock.OnNextTick += time => ElapsedTime.Text = time.ToString();
         }
     }
 }

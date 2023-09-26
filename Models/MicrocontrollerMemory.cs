@@ -2,20 +2,23 @@
 {
     public class MicrocontrollerMemory
     {
-        public delegate void ServiceDemandedHandler();
+        public delegate void ServiceHandler();
         public delegate void MessageHandler(Message message);
 
         public event MessageHandler? OnMessageReceived;
         public event MessageHandler? OnMessageIgnored;
-        public event ServiceDemandedHandler? OnServiceDemanded;
+        public event ServiceHandler? OnServiceDemanded;
+        public event ServiceHandler? OnServiceIsDone;
 
         private readonly double _size;
         private readonly double _serviceThreshold;
-        private readonly List<Message> _values = new();
+        private readonly List<Message> _messages = new();
         private double _busy = 0;
 
         public double FreeSpace { get => _size - _busy; }
         public double BusyAsPercents { get => _busy / (_size / 100); }
+
+        public int MessagesCount { get => _messages.Count; }
         private bool IsServiceTresholdReached { get => _busy >= _serviceThreshold; }
 
         public MicrocontrollerMemory(double memoryVolume, double thresholdRatio)
@@ -28,7 +31,7 @@
         {
             if (FreeSpace >= message.Size)
             {
-                _values.Add(message);
+                _messages.Add(message);
                 _busy += message.Size;
 
                 if (IsServiceTresholdReached)
@@ -48,10 +51,11 @@
 
         public List<Message> Release()
         {
-            var list = _values.ToList();
+            var list = _messages.ToList();
 
-            _values.Clear();
+            _messages.Clear();
             _busy = 0;
+            OnServiceIsDone?.Invoke();
 
             return list;
         }
