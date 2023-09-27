@@ -24,7 +24,7 @@
                 <TextBlock x:Name="ElapsedTime" />
             </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <view:ControlCenterView Width="80" Height="80" Margin="40" />
+                    <view:ControlCenterView ControlCenter="{Binding ElementName=Root, Path=Simulation.ControlCenter}"  Height="80" Margin="40" />
                     
                     <ListBox x:Name="SatellitesBox" BorderThickness="0">
                         <ListBox.ItemTemplate>

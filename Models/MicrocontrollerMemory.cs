@@ -12,7 +12,7 @@
 
         private readonly double _size;
         private readonly double _serviceThreshold;
-        private readonly List<Message> _messages = new();
+        private readonly Queue<Message> _messages = new();
         private double _busy = 0;
 
         public double FreeSpace { get => _size - _busy; }
@@ -31,7 +31,7 @@
         {
             if (FreeSpace >= message.Size)
             {
-                _messages.Add(message);
+                _messages.Enqueue(message);
                 _busy += message.Size;
 
                 if (IsServiceTresholdReached)
@@ -49,15 +49,15 @@
             return false;
         }
 
-        public List<Message> Release()
+        public IEnumerable<Message> Release()
         {
-            var list = _messages.ToList();
+            while (_messages.Count > 0)
+            {
+                yield return _messages.Dequeue();
+            }
 
-            _messages.Clear();
             _busy = 0;
             OnServiceIsDone?.Invoke();
-
-            return list;
         }
     }
 }

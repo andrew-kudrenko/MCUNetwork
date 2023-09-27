@@ -5,8 +5,8 @@ namespace MCUNetwork.Control
     public class Simulation
     {
         public bool IsRunning { get; private set; } = false;
-        public readonly ControlCenter ControlCenter = new();
         public readonly Clock Clock = new();
+        public readonly ControlCenter ControlCenter;
         
         private readonly SimulationConfig _config;
         private readonly Random _random = new();
@@ -22,6 +22,7 @@ namespace MCUNetwork.Control
                 ServiceThresholdRatio = 0.45, 
                 TransferSpeed = 50,
             };
+            ControlCenter = new(Clock);
 
             Init();
         } 
@@ -32,8 +33,8 @@ namespace MCUNetwork.Control
 
             long duration = 86_400L;
 
-            Clock.Delay = 1;
-            Clock.ExecuteUntil(50, duration, SendMockMessage);
+            Clock.Delay = 80;
+            Clock.ExecuteUntil(150, duration, SendMockMessage);
             
             await Clock.Run(duration, _config.ServiceDelay);
         }
@@ -55,8 +56,10 @@ namespace MCUNetwork.Control
 
         private void SendMockMessage()
         {
-            var at = _random.Next(ControlCenter.Satellites.Count);          
-            ControlCenter.Satellites[at].Memory.TryReceive(new(_random.Next(100) + 50));
+            var at = _random.Next(ControlCenter.Satellites.Count);
+            var (mc, _) = ControlCenter.Satellites[at];
+            
+            mc.Memory.TryReceive(new(_random.Next(100) + 50));
         }
     }
 }
