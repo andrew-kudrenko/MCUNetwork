@@ -28,7 +28,7 @@ namespace MCUNetwork.View
         {
             if (sender is ControlCenterView view)
             {
-                var value = (ControlCenter) args.NewValue;
+                var value = (ControlCenter)args.NewValue;
                 value.OnReceiveMessage += _ => view.ReceivedMessages.Text = value.ReceivedMessages.ToString();
             }
         }

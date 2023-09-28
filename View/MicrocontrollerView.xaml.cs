@@ -25,7 +25,11 @@ namespace MCUNetwork.View
         public MicrocontrollerView()
         {
             InitializeComponent();
+            Init();
+        }
 
+        private void Init()
+        {
             MessageList.ItemsSource = Messages;
         }
 
@@ -33,7 +37,7 @@ namespace MCUNetwork.View
         {
             if (sender is MicrocontrollerView view)
             {
-                var microcontroller = (Microcontroller)args.NewValue;
+                var microcontroller = (Microcontroller) args.NewValue;
 
                 if (view.Messages.Count > 0)
                 {

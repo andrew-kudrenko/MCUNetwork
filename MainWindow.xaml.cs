@@ -16,6 +16,7 @@ namespace MCUNetwork
         private void Init()
         {
             SatellitesBox.ItemsSource = Simulation.ControlCenter.Satellites;
+            CenterView.ControlCenter = Simulation.ControlCenter;
 
             RunButton.Click += async (sender, args) =>
             {

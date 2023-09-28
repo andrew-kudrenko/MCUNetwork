@@ -34,7 +34,7 @@ namespace MCUNetwork.Control
             long duration = 86_400L;
 
             Clock.Delay = 80;
-            Clock.ExecuteUntil(150, duration, SendMockMessage);
+            Clock.ExecuteUntil(100, duration, SendMockMessage);
             
             await Clock.Run(duration, _config.ServiceDelay);
         }
@@ -57,7 +57,7 @@ namespace MCUNetwork.Control
         private void SendMockMessage()
         {
             var at = _random.Next(ControlCenter.Satellites.Count);
-            var (mc, _) = ControlCenter.Satellites[at];
+            var mc = ControlCenter.Satellites.ElementAt(at);
             
             mc.Memory.TryReceive(new(_random.Next(100) + 50));
         }
