@@ -1,6 +1,4 @@
-﻿using MCUNetwork.Control;
-
-namespace MCUNetwork.Models
+﻿namespace MCUNetwork.Models
 {
     public class ControlCenter
     {

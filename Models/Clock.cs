@@ -1,4 +1,4 @@
-﻿namespace MCUNetwork.Control
+﻿namespace MCUNetwork.Models
 {
     public class Clock
     {

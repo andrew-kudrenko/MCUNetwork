@@ -1,6 +1,4 @@
-﻿using MCUNetwork.Models;
-
-namespace MCUNetwork.Control
+﻿namespace MCUNetwork.Models
 {
     public class Simulation
     {
