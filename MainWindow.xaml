@@ -43,6 +43,7 @@
             <StackPanel>
                 <TextBox>Simulation Settings</TextBox>
                 <Button Name="RunButton" Content="Run" />
+                <Slider x:Name="SpeedSlider" Minimum="0" Maximum="100" Value="50" />
             </StackPanel>
         </Grid>
     </Grid>

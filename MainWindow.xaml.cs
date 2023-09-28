@@ -30,6 +30,10 @@ namespace MCUNetwork
             };
 
             Simulation.Clock.OnNextTick += time => ElapsedTime.Text = time.ToString();
+            SpeedSlider.ValueChanged += (sender, args) =>
+            {
+                Simulation.Clock.Delay = 101 - ((int) args.NewValue);
+            };
         }
     }
 }
