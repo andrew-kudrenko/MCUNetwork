@@ -5,7 +5,7 @@ namespace MCUNetwork
 {
     public partial class MainWindow : Window
     {
-        public Simulation Simulation { get; } = new Simulation();
+        public readonly Simulation Simulation = new();
 
         public MainWindow()
         {

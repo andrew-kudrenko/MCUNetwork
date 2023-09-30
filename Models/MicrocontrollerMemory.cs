@@ -17,7 +17,6 @@
 
         public double FreeSpace { get => _size - _busy; }
         public double BusyAsPercents { get => _busy / (_size / 100); }
-
         public int MessagesCount { get => _messages.Count; }
         private bool IsServiceTresholdReached { get => _busy >= _serviceThreshold; }
 

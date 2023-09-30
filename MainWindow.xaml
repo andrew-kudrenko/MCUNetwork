@@ -41,7 +41,7 @@
         <GridSplitter />
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel>
-                <TextBox>Simulation Settings</TextBox>
+                <TextBox Text="Simulation Settings" />
                 <Button Name="RunButton" Content="Run" />
                 <Slider x:Name="SpeedSlider" Minimum="0" Maximum="100" Value="50" />
             </StackPanel>

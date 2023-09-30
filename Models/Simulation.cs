@@ -2,12 +2,12 @@
 {
     public class Simulation
     {
-        public bool IsRunning { get; private set; } = false;
+        public bool IsRunning { get => Clock.IsRunning; }
         public readonly Clock Clock = new();
         public readonly ControlCenter ControlCenter;
         
         private readonly SimulationConfig _config;
-        private readonly Random _random = new();
+        private readonly ExternalDataSource _externalDataSource;
 
         public Simulation()
         {
@@ -21,25 +21,20 @@
                 TransferSpeed = 50,
             };
             ControlCenter = new(Clock);
+            _externalDataSource = new(Clock);
 
             Init();
         } 
 
         public async Task Run()
         {
-            IsRunning = true;
-
-            long duration = 86_400L;
-
-            Clock.Delay = 80;
-            Clock.ExecuteUntil(100, duration, SendMockMessage);
-            
-            await Clock.Run(duration, _config.ServiceDelay);
+            var running = Clock.Run(86_400L, _config.ServiceDelay);
+            _externalDataSource.Start();
+            await running;
         }
 
         public void Stop()
         {
-            IsRunning = false;
             Clock.Stop();
         }
 
@@ -48,16 +43,10 @@
             for (int i = 0; i < _config.SatellitesCount; i++)
             {
                 var satellite = new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio);
-                ControlCenter.AddSatellite(satellite);
+                
+                ControlCenter.Register(satellite);
+                _externalDataSource.Register(satellite);
             }
-        }
-
-        private void SendMockMessage()
-        {
-            var at = _random.Next(ControlCenter.Satellites.Count);
-            var mc = ControlCenter.Satellites.ElementAt(at);
-            
-            mc.Memory.TryReceive(new(_random.Next(100) + 50));
         }
     }
 }

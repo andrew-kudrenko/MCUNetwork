@@ -47,9 +47,7 @@ namespace MCUNetwork.View
                 microcontroller.Memory.OnMessageReceived += message =>
                 {
                     view.Messages.Add(message);
-                    
                     view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
-
                     view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
                 };
 
@@ -67,6 +65,9 @@ namespace MCUNetwork.View
                 {
                     view.MemoryBar.Foreground = Brushes.Green;
                     view.Messages.Clear();
+
+                    view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
+                    view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
                 };
             }
         }

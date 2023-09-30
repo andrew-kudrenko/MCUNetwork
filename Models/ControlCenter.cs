@@ -4,16 +4,25 @@
     {
         public delegate void ReceiveMessageHandler(Message message);
         public event ReceiveMessageHandler? OnReceiveMessage;
+        public event ReceiveMessageHandler? OnIgnoreMessage;
         public int ReceivedMessages { get; private set; } = 0;
+        public int IgnoredMessages { get; private set; } = 0;
+
+        public Queue<(Microcontroller, Pipe)> ServiceRequestors = new();
+        public int ServiceDelay { get; set; } = 2_000;
 
         public readonly List<Microcontroller> Satellites = new();
         private readonly Clock _clock;
 
-        public ControlCenter(Clock clock) => _clock = clock;
-
-        public void AddSatellite(Microcontroller satellite)
+        public ControlCenter(Clock clock)
         {
-            var pipe = new Pipe(_clock, 150);
+            _clock = clock;
+            Init();
+        }
+
+        public void Register(Microcontroller satellite)
+        {
+            var pipe = new Pipe(_clock, 100);
 
             pipe.OnMessageSent += message =>
             {
@@ -22,21 +31,33 @@
             };
 
             Satellites.Add(satellite);
-            satellite.Memory.OnServiceDemanded += async () =>
+            satellite.Memory.OnMessageIgnored += message => 
             {
-                await Task.Delay(1_000);
-                Service(satellite, pipe);
+                IgnoredMessages++;
+                OnIgnoreMessage?.Invoke(message);
             };
+            satellite.Memory.OnServiceDemanded += () => ServiceRequestors.Enqueue((satellite, pipe));
         }
 
-        private static void Service(Microcontroller satellite, Pipe pipe)
+        private void Init()
         {
-            int serviced = 0;
+            _clock.ExecuteEach(Service, ServiceDelay);
+        }
 
+        private void Service()
+        {
+            while (ServiceRequestors.Count > 0)
+            {
+                var (requestor, pipe) = ServiceRequestors.Dequeue();
+                SendMessages(requestor, pipe);
+            }
+        }
+
+        private static void SendMessages(Microcontroller satellite, Pipe pipe)
+        {
             foreach (var message in satellite.Memory.Release())
             {
                 pipe.Send(message);
-                serviced++;
             }
         }
     }
