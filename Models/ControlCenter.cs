@@ -9,7 +9,7 @@
         public int IgnoredMessages { get; private set; } = 0;
 
         public Queue<(Microcontroller, Pipe)> ServiceRequestors = new();
-        public int ServiceDelay { get; set; } = 2_000;
+        public int ServiceDelay { get; set; } = 750;
 
         public readonly List<Microcontroller> Satellites = new();
         private readonly Clock _clock;

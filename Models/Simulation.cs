@@ -15,7 +15,7 @@
                 MemorySize = 1_000, 
                 MessageLength = 75, 
                 Period = 20, 
-                SatellitesCount = 5, 
+                SatellitesCount = 9, 
                 ServiceDelay = 10, 
                 ServiceThresholdRatio = 0.45, 
                 TransferSpeed = 50,
@@ -28,7 +28,7 @@
 
         public async Task Run()
         {
-            var running = Clock.Run(86_400L, _config.ServiceDelay);
+            var running = Clock.Run(86_400L, 10);
             _externalDataSource.Start();
             await running;
         }

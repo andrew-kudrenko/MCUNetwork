@@ -3,28 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d"
              x:Name="Root"
-             d:DesignHeight="200" d:DesignWidth="450">
+             d:DesignHeight="100" d:DesignWidth="100">
     <StackPanel Orientation="Horizontal">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Image Width="50" Height="50" Name="Image" Source="/Assets/Microcontroller.png" />
+            <Image MaxWidth="40" MaxHeight="40" Name="Image" Source="/Assets/Microcontroller.png" />
             <TextBlock x:Name="MessageCount" HorizontalAlignment="Center" FontWeight="Bold" Text="0" />
-            <TextBlock HorizontalAlignment="Center" Text="Memory" FontSize="10" />
-            <ProgressBar x:Name="MemoryBar" Minimum="0" Maximum="100" Height="12" />
+            <ProgressBar x:Name="MemoryBar" Minimum="0" Maximum="100" Height="10" />
         </StackPanel>
-        <ListView x:Name="MessageList" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <local:Message Width="30" Height="30" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
     </StackPanel>
 </UserControl>

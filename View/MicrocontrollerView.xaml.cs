@@ -25,12 +25,6 @@ namespace MCUNetwork.View
         public MicrocontrollerView()
         {
             InitializeComponent();
-            Init();
-        }
-
-        private void Init()
-        {
-            MessageList.ItemsSource = Messages;
         }
 
         private static void OnChangeMicrocontroller(DependencyObject sender, DependencyPropertyChangedEventArgs args)

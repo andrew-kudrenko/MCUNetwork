@@ -15,9 +15,6 @@ namespace MCUNetwork
 
         private void Init()
         {
-            SatellitesBox.ItemsSource = Simulation.ControlCenter.Satellites;
-            CenterView.ControlCenter = Simulation.ControlCenter;
-
             RunButton.Click += async (sender, args) =>
             {
                 if (Simulation.IsRunning)
@@ -34,6 +31,10 @@ namespace MCUNetwork
             {
                 Simulation.Clock.Delay = 101 - ((int) args.NewValue);
             };
+
+            Simulation.Clock.Delay = 101 - ((int) SpeedSlider.Value);
+
+            SimulationContainer.Simulation = Simulation;
         }
     }
 }

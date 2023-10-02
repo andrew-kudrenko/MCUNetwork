@@ -5,19 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="170">
+             BorderThickness="1"
+             d:DesignHeight="100" 
+             d:DesignWidth="150">
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <StackPanel Orientation="Vertical" Width="80" VerticalAlignment="Center">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Received: " Foreground="DarkGreen" />
+                <TextBlock Text="Done: " Foreground="DarkGreen" />
                 <TextBlock x:Name="ReceivedMessages" Text="0" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Ignored: " Foreground="DarkRed" />
+                <TextBlock Text="Missed: " Foreground="DarkRed" />
                 <TextBlock x:Name="IgnoredMessages" Text="0" />
             </StackPanel>
         </StackPanel>
-        <Image Source="/Assets/Computer.png" Width="90" />
+        <Image Source="/Assets/Computer.png" MaxWidth="75" />
     </StackPanel>
 </UserControl>
