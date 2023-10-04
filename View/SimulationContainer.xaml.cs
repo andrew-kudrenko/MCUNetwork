@@ -45,7 +45,8 @@ namespace MCUNetwork.View
         private void Init(object sender, RoutedEventArgs args)
         {
             PositionSatellites();
-            PositionControlCenter();    
+            PositionControlCenter();
+            ControlCenterView.ControlCenter = Simulation.ControlCenter;
         }
 
         private Point GetCenter() => new (ActualWidth / 2, ActualHeight / 2);
