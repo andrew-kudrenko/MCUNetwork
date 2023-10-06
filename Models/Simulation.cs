@@ -8,6 +8,7 @@
         
         private readonly SimulationConfig _config;
         private readonly ExternalDataSource _externalDataSource;
+        private readonly Random _random = new();
 
         public Simulation()
         {
@@ -15,7 +16,7 @@
                 MemorySize = 1_000, 
                 MessageLength = 75, 
                 Period = 20, 
-                SatellitesCount = 9, 
+                SatellitesCount = 5, 
                 ServiceDelay = 10, 
                 ServiceThresholdRatio = 0.45, 
                 TransferSpeed = 50,
@@ -42,7 +43,7 @@
         {
             for (int i = 0; i < _config.SatellitesCount; i++)
             {
-                var satellite = new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio);
+                var satellite = new Microcontroller(_random.Next(180, 1000), _config.ServiceThresholdRatio);
                 var pipe = new Pipe(Clock, 20);
 
                 ControlCenter.Register((satellite, pipe));

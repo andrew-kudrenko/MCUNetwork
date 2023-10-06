@@ -45,11 +45,12 @@ namespace MCUNetwork.View
                     view.Messages.Clear();
                 }
 
+                view.SizeText.Text = microcontroller.Memory.Size.ToString();
+
                 microcontroller.Memory.OnMessageReceived += message =>
                 {
                     view.Messages.Add(message);
-                    view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
-                    view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
+                    UpdateView(view, microcontroller);
                 };
 
                 microcontroller.Memory.OnServiceDemanded += () => 
@@ -67,10 +68,17 @@ namespace MCUNetwork.View
                     view.MemoryBar.Foreground = Brushes.Green;
                     view.Messages.Clear();
 
-                    view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
-                    view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
+                    UpdateView(view, microcontroller);
                 };
             }
+        }
+
+        private static void UpdateView(MicrocontrollerView view, Microcontroller microcontroller)
+        {
+            view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
+            view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
+            view.BusyPercentText.Text = microcontroller.Memory.BusyAsPercents.ToString("N2");
+            view.BusyMbText.Text = microcontroller.Memory.Busy.ToString();
         }
     }
 }

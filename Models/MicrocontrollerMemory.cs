@@ -10,20 +10,20 @@
         public event ServiceHandler? OnServiceDemanded;
         public event ServiceHandler? OnServiceIsDone;
 
-        private readonly double _size;
         private readonly double _serviceThreshold;
         private readonly Queue<Message> _messages = new();
-        private double _busy = 0;
 
-        public double FreeSpace { get => _size - _busy; }
-        public double BusyAsPercents { get => _busy / (_size / 100); }
+        public double Busy { get; private set; } = 0;
+        public readonly double Size;
+        public double FreeSpace { get => Size - Busy; }
+        public double BusyAsPercents { get => Busy / (Size / 100); }
         public int MessagesCount { get => _messages.Count; }
-        private bool IsServiceTresholdReached { get => _busy >= _serviceThreshold; }
+        private bool IsServiceTresholdReached { get => Busy >= _serviceThreshold; }
 
         public MicrocontrollerMemory(double memoryVolume, double thresholdRatio)
         {
-            _size = memoryVolume;
-            _serviceThreshold = _size * thresholdRatio;
+            Size = memoryVolume;
+            _serviceThreshold = Size * thresholdRatio;
         }
 
         public bool TryReceive(Message message)
@@ -31,7 +31,7 @@
             if (FreeSpace >= message.Size)
             {
                 _messages.Enqueue(message);
-                _busy += message.Size;
+                Busy += message.Size;
 
                 if (IsServiceTresholdReached)
                 {
@@ -55,7 +55,7 @@
                 yield return _messages.Dequeue();
             }
 
-            _busy = 0;
+            Busy = 0;
             OnServiceIsDone?.Invoke();
         }
     }

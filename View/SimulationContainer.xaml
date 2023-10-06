@@ -8,7 +8,6 @@
              x:Name="RootView"
              d:DesignHeight="450" 
              d:DesignWidth="800"
-             Background="Beige"
              DataContext="{Binding ElementName=RootView, Path=Simulation}">
     <Canvas x:Name="ContainerView">
         <local:ControlCenterView x:Name="ControlCenterView" />

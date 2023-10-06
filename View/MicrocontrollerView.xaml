@@ -6,16 +6,33 @@
              mc:Ignorable="d"
              x:Name="Root"
              DataContext="{Binding ElementName=Root}"
-             d:DesignHeight="100" d:DesignWidth="100">
+             d:DesignHeight="100" d:DesignWidth="120">
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="№ " />
-                <TextBlock Text="{Binding Path=Index}" />
+                <TextBlock Text="# " FontWeight="Bold" />
+                <TextBlock Text="{Binding Path=Index}" FontWeight="Bold" />
             </StackPanel>
             <Image MaxWidth="40" MaxHeight="40" Name="Image" Source="/Assets/Microcontroller.png" />
             <TextBlock x:Name="MessageCount" HorizontalAlignment="Center" FontWeight="Bold" Text="0" />
             <ProgressBar x:Name="MemoryBar" Minimum="0" Maximum="100" Height="10" />
+        </StackPanel>
+        <StackPanel Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" MinWidth="55">
+                <TextBlock Text="Size: " FontSize="10" />
+                <TextBlock x:Name="SizeText" Text="0" FontSize="10" FontWeight="Bold" />
+                <TextBlock Text="MB" FontSize="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" MinWidth="55">
+                <TextBlock Text="Busy: " FontSize="10" />
+                <TextBlock x:Name="BusyPercentText" Text="0" FontSize="10" FontWeight="Bold" />
+                <TextBlock Text="%" FontSize="10" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" MinWidth="55">
+                <TextBlock Text="Busy: " FontSize="10" />
+                <TextBlock x:Name="BusyMbText" FontSize="10" FontWeight="Bold" />
+                <TextBlock Text="MB" FontSize="10" />
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>

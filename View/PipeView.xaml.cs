@@ -25,9 +25,9 @@ namespace MCUNetwork.View
             InitializeComponent();
         }
 
-        private void MarkAsBusy() => LineView.Background = Brushes.Cyan;
+        private void MarkAsBusy() => LineView.BorderBrush = Brushes.Cyan;
 
-        private void MarkAsFree() => LineView.Background = Brushes.Black;
+        private void MarkAsFree() => LineView.BorderBrush = Brushes.Transparent;
 
         private static void OnChangePipe(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {

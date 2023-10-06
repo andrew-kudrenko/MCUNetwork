@@ -56,11 +56,11 @@ namespace MCUNetwork.View
             };
         }
 
-        private double GetControlCenterWidth() => ActualWidth / 4;
+        private double GetControlCenterWidth() => ActualWidth / 6;
 
-        private double GetSatelliteWidth() => ActualWidth / 10;
+        private double GetSatelliteWidth() => ActualWidth / 6;
 
-        private double GetPipeWidth() => ActualWidth / 12;
+        private double GetPipeWidth() => ActualWidth / 10;
 
         private void PositionSatellites()
         {
@@ -71,7 +71,7 @@ namespace MCUNetwork.View
 
             double angleStep = 360d / Simulation.ControlCenter.Satellites.Count;
             var satelliteWidth = GetSatelliteWidth();
-            double satelliteHeight = satelliteWidth * 1.5;
+            double satelliteHeight = satelliteWidth * .75;
             var pipeWidth = GetPipeWidth();
             var center = GetCenter();
             double radian = Math.PI / 180d;
