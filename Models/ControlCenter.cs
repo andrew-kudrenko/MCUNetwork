@@ -9,9 +9,9 @@
         public int IgnoredMessages { get; private set; } = 0;
 
         public Queue<(Microcontroller, Pipe)> ServiceRequestors = new();
-        public int ServiceDelay { get; set; } = 750;
+        public int ServiceDelay { get; set; } = 350;
 
-        public readonly List<Microcontroller> Satellites = new();
+        public readonly List<(Microcontroller, Pipe)> Satellites = new();
         private readonly Clock _clock;
 
         public ControlCenter(Clock clock)
@@ -20,23 +20,21 @@
             Init();
         }
 
-        public void Register(Microcontroller satellite)
+        public void Register((Microcontroller, Pipe) pair)
         {
-            var pipe = new Pipe(_clock, 100);
-
-            pipe.OnMessageSent += message =>
+            pair.Item2.OnReceived += message =>
             {
                 ReceivedMessages++;
                 OnReceiveMessage?.Invoke(message);
             };
 
-            Satellites.Add(satellite);
-            satellite.Memory.OnMessageIgnored += message => 
+            Satellites.Add(pair);
+            pair.Item1.Memory.OnMessageIgnored += message => 
             {
                 IgnoredMessages++;
                 OnIgnoreMessage?.Invoke(message);
             };
-            satellite.Memory.OnServiceDemanded += () => ServiceRequestors.Enqueue((satellite, pipe));
+            pair.Item1.Memory.OnServiceDemanded += () => ServiceRequestors.Enqueue(pair);
         }
 
         private void Init()
@@ -48,16 +46,15 @@
         {
             while (ServiceRequestors.Count > 0)
             {
-                var (requestor, pipe) = ServiceRequestors.Dequeue();
-                SendMessages(requestor, pipe);
+                SendMessages(ServiceRequestors.Dequeue());
             }
         }
 
-        private static void SendMessages(Microcontroller satellite, Pipe pipe)
+        private static void SendMessages((Microcontroller, Pipe) pair)
         {
-            foreach (var message in satellite.Memory.Release())
+            foreach (var message in pair.Item1.Memory.Release())
             {
-                pipe.Send(message);
+                pair.Item2.Send(message);
             }
         }
     }

@@ -1,16 +1,12 @@
-﻿<UserControl x:Class="MCUNetwork.View.SimulationContainer"
+﻿<UserControl x:Class="MCUNetwork.View.PipeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d" 
-             x:Name="RootView"
-             d:DesignHeight="450" 
-             d:DesignWidth="800"
-             Background="Beige"
-             DataContext="{Binding ElementName=RootView, Path=Simulation}">
-    <Canvas x:Name="ContainerView">
-        <local:ControlCenterView x:Name="ControlCenterView" />
-    </Canvas>
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <Canvas x:Name="LineView" Height="3" Background="Black" />
+    </StackPanel>
 </UserControl>

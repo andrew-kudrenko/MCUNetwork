@@ -14,10 +14,17 @@ namespace MCUNetwork.View
             typeof(MicrocontrollerView),
             new PropertyMetadata(null, new(OnChangeMicrocontroller))
         );
+        public static readonly DependencyProperty IndexProperty = DependencyProperty.Register("Index", typeof(int), typeof(MicrocontrollerView));
 
         public Microcontroller Microcontroller {
             get => (Microcontroller) GetValue(MicrocontrollerProperty); 
             set => SetValue(MicrocontrollerProperty, value);
+        }
+
+        public int Index
+        {
+            get => (int)GetValue(IndexProperty);
+            set => SetValue(IndexProperty, value);
         }
 
         public readonly ObservableCollection<Models.Message> Messages = new();

@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              x:Name="Root"
+             DataContext="{Binding ElementName=Root}"
              d:DesignHeight="100" d:DesignWidth="100">
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="№ " />
+                <TextBlock Text="{Binding Path=Index}" />
+            </StackPanel>
             <Image MaxWidth="40" MaxHeight="40" Name="Image" Source="/Assets/Microcontroller.png" />
             <TextBlock x:Name="MessageCount" HorizontalAlignment="Center" FontWeight="Bold" Text="0" />
             <ProgressBar x:Name="MemoryBar" Minimum="0" Maximum="100" Height="10" />

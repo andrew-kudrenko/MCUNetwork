@@ -43,8 +43,9 @@
             for (int i = 0; i < _config.SatellitesCount; i++)
             {
                 var satellite = new Microcontroller(_config.MemorySize, _config.ServiceThresholdRatio);
-                
-                ControlCenter.Register(satellite);
+                var pipe = new Pipe(Clock, 20);
+
+                ControlCenter.Register((satellite, pipe));
                 _externalDataSource.Register(satellite);
             }
         }

@@ -21,15 +21,15 @@
 
         <Grid Grid.Row="0" Grid.Column="0">
             <view:SimulationContainer x:Name="SimulationContainer" Simulation="{Binding Path=Simulation}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Elapsed time (s): " />
-                <TextBlock x:Name="ElapsedTime" />
-            </StackPanel>
         </Grid>
         <GridSplitter />
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel>
                 <TextBox Text="Simulation Settings" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Elapsed time (s): " />
+                    <TextBlock x:Name="ElapsedTime" />
+                </StackPanel>
                 <Button Name="RunButton" Content="Run" />
                 <Slider x:Name="SpeedSlider" Minimum="0" Maximum="100" Value="50" />
             </StackPanel>

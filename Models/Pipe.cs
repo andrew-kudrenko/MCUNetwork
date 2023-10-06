@@ -2,8 +2,10 @@
 {
     public class Pipe
     {
-        public delegate void SentMessageHandler(Message message);
-        public event SentMessageHandler? OnMessageSent;
+        public delegate void MessageHandler(Message message);
+        
+        public event MessageHandler? OnSent;
+        public event MessageHandler? OnReceived;
 
         private readonly double _capacity;
         private readonly Clock _clock;
@@ -21,6 +23,7 @@
         public void Send(Message message)
         {
             _messages.Enqueue(message);
+            OnSent?.Invoke(message);
         }
 
         private void Init()
@@ -34,7 +37,7 @@
                     if (_sentVolume >= message.Size)
                     {
                         _sentVolume -= message.Size;
-                        OnMessageSent?.Invoke(_messages.Dequeue());
+                        OnReceived?.Invoke(_messages.Dequeue());
                     }
                 } else
                 {
