@@ -33,7 +33,7 @@
         private void Init()
         {
             InitSatellites();
-            Clock.RunEachTicks(async elapsedTicks => await ControlCenter.Service(), _config.ServiceEach);
+            Clock.ScheduleEach(async elapsedTicks => await ControlCenter.Service(), _config.ServiceEach);
         }
 
         private void InitSatellites()
@@ -47,7 +47,7 @@
                     ReceiveMessageEach = _config.ReceiveMessageEach,
                 };
 
-                Clock.RunEachTicks(elapsedTicks => satellite.Microcontroller.Memory.TryReceive(_externalDataSource.Send()), satellite.ReceiveMessageEach);
+                Clock.ScheduleEach(elapsedTicks => satellite.Microcontroller.Memory.TryReceive(_externalDataSource.Send()), satellite.ReceiveMessageEach);
                 satellite.Microcontroller.Memory.OnServiceDemanded += () => ControlCenter.DemandService(satellite);
                 
                 Satellites.Add(satellite);

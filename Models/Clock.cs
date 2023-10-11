@@ -38,9 +38,9 @@
             }
         }
 
-        public Task Await(int ticks = 1)
+        public Task Wait(int ticks = 1)
         {
-            int finishAt = ElapsedTicks + ticks * Delta;
+            int finishAt = ElapsedTicks + ticks;
             var source = new TaskCompletionSource<int>();
 
             if (IsRunning)
@@ -62,21 +62,17 @@
             return source.Task;
         }
 
-        public void RunEachTicks(Action<int> action, int eachTicks) => ScheduleAction(action, eachTicks);
-
         public void Stop()
         {
             IsRunning = false;            
             OnNextTick = null;
         }
 
-        private void ScheduleAction(Action<int> action, int eachTicks)
+        public void ScheduleEach(Action<int> action, int eachTicks)
         {
-            Action<int> handler = null!;
-
             long last = ElapsedTicks;
 
-            handler = elapsedTicks =>
+            OnNextTick += elapsedTicks =>
             {
                 if (elapsedTicks - eachTicks >= last)
                 {
@@ -84,8 +80,6 @@
                     last = elapsedTicks;
                 }
             };
-
-            OnNextTick += handler;
         }
     }
 }

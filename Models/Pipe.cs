@@ -26,7 +26,7 @@
             while (_sent < message.Size)
             {
                 _sent += _speed;
-                await _clock.Await();
+                await _clock.Wait();
             }
 
             _result = message;
@@ -36,7 +36,7 @@
         {
             while (_result is null)
             {
-                await _clock.Await();
+                await _clock.Wait();
             }
 
             OnReceived?.Invoke(_result);
