@@ -2,13 +2,10 @@
 {
     public class MicrocontrollerMemory
     {
-        public delegate void ServiceHandler();
-        public delegate void MessageHandler(Message message);
-
-        public event MessageHandler? OnMessageReceived;
-        public event MessageHandler? OnMessageIgnored;
-        public event ServiceHandler? OnServiceDemanded;
-        public event ServiceHandler? OnServiceIsDone;
+        public event Action<Message>? OnMessageReceived;
+        public event Action<Message>? OnMessageIgnored;
+        public event Action? OnServiceDemanded;
+        public event Action? OnServiceIsDone;
 
         private readonly double _serviceThreshold;
         private readonly Queue<Message> _messages = new();

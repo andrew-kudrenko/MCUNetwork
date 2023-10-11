@@ -2,97 +2,86 @@
 {
     public class Clock
     {
-        public delegate void ScheduledActionHandler();
-        public delegate void NextTickHandler(long elapsedTime);
-        public delegate void StartHandler();
+        public event Action<int>? OnNextTick;
 
-        public event NextTickHandler? OnNextTick;
-        public event NextTickHandler? OnEnd;
-        public event StartHandler? OnStart;
-
-        public int Delay { get; set; } = 1_000;
+        public int ElapsedTicks { get; private set; }
+        public int ElapsedTime { get; private set; }
+        public int Delay { get; set; }
+        public int Delta { get; set; }
         public bool IsRunning { get; private set; } = false;
 
-        private long _elapsedTime = 0;
 
-        public async Task Run(long duration, int delta)
+        public async Task Run(int duration)
         {
             if (IsRunning)
             {
                 throw new InvalidOperationException("You have already started a clock");
             }
 
+            ElapsedTicks = 0;
+            ElapsedTime = 0;
             IsRunning = true;
-            _elapsedTime = 0;
-
-            OnStart?.Invoke();
 
             while (IsRunning)
             {
-                if (_elapsedTime < duration)
+                if (ElapsedTime < duration)
                 {
+                    ElapsedTicks++; 
+                    ElapsedTime = ElapsedTicks * Delta;
+
+                    OnNextTick?.Invoke(ElapsedTicks);
                     await Task.Delay(Delay);
-                    OnNextTick?.Invoke(_elapsedTime);
-                    _elapsedTime += delta;
                 } else
                 {
                     IsRunning = false;
                 }
+            }
+        }
 
+        public Task Await(int ticks = 1)
+        {
+            int finishAt = ElapsedTicks + ticks * Delta;
+            var source = new TaskCompletionSource<int>();
+
+            if (IsRunning)
+            {
+                Action<int> handler = null!;
+
+                handler = elapsedTicks => 
+                {
+                    if (elapsedTicks >= finishAt)
+                    {
+                        OnNextTick -= handler;
+                        source.SetResult(elapsedTicks);
+                    }
+                };
+
+                OnNextTick += handler;
             }
 
-            OnEnd?.Invoke(_elapsedTime);
+            return source.Task;
         }
+
+        public void RunEachTicks(Action<int> action, int eachTicks) => ScheduleAction(action, eachTicks);
 
         public void Stop()
         {
-            IsRunning = false;
-            
-            OnEnd?.Invoke(_elapsedTime);
-            OnNextTick = null!;
+            IsRunning = false;            
+            OnNextTick = null;
         }
 
-        public void ExecuteEach(ScheduledActionHandler action, int each) => ScheduleAction(action, each);
-
-        public void ExecuteUntil(ScheduledActionHandler action, int each, long until) => ScheduleAction(action, each, until);
-
-        public void ExecuteAfter(ScheduledActionHandler action, int ticks) => ScheduleAction(action, 1, ticks + _elapsedTime);
-
-        private void ScheduleAction(ScheduledActionHandler action, long each, long until)
+        private void ScheduleAction(Action<int> action, int eachTicks)
         {
-            NextTickHandler handler = null!;
+            Action<int> handler = null!;
 
-            long last = _elapsedTime;
+            long last = ElapsedTicks;
 
-            handler = elapsed =>
+            handler = elapsedTicks =>
             {
-                if (elapsed - each >= last)
+                if (elapsedTicks - eachTicks >= last)
                 {
-                    action.Invoke();
-                    last = elapsed;
-
-                    if (elapsed >= until)
-                    {
-                        OnNextTick -= handler;
-                    }
-                }
-            };
-
-            OnNextTick += handler;
-        }
-
-        private void ScheduleAction(ScheduledActionHandler action, long each)
-        {
-            NextTickHandler handler = null!;
-
-            long last = _elapsedTime;
-
-            handler = elapsed =>
-            {
-                if (elapsed - each >= last)
-                {
-                    action.Invoke();
-                    last = elapsed;
+                    action.Invoke(elapsedTicks);
+                    last = elapsedTicks;
                 }
             };
 

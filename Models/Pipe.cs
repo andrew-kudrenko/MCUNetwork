@@ -2,48 +2,46 @@
 {
     public class Pipe
     {
-        public delegate void MessageHandler(Message message);
-        
-        public event MessageHandler? OnSent;
-        public event MessageHandler? OnReceived;
+        public event Action<Message>? OnSent;
+        public event Action<Message>? OnReceived;
 
-        private readonly double _capacity;
+        private Message? _result;
         private readonly Clock _clock;
-        private readonly Queue<Message> _messages = new();
-        private double _sentVolume = 0;
+        private readonly double _speed;
+        private double _sent = 0;
 
         public Pipe(Clock clock, double capacity)
         {
             _clock = clock;
-            _capacity = capacity;
-
-            Init();
+            _speed = capacity;
         }
 
-        public void Send(Message message)
+        public async Task Send(Message message)
         {
-            _messages.Enqueue(message);
             OnSent?.Invoke(message);
+
+            _sent = 0;
+            _result = null;
+
+            while (_sent < message.Size)
+            {
+                _sent += _speed;
+                await _clock.Await();
+            }
+
+            _result = message;
         }
 
-        private void Init()
+        public async Task<Message> Receive()
         {
-            _clock.OnNextTick += elapsedTime =>
+            while (_result is null)
             {
-                if (_messages.Count > 0 && _messages.TryPeek(out Message? message))
-                {
-                    _sentVolume += _capacity;
+                await _clock.Await();
+            }
 
-                    if (_sentVolume >= message.Size)
-                    {
-                        _sentVolume -= message.Size;
-                        OnReceived?.Invoke(_messages.Dequeue());
-                    }
-                } else
-                {
-                    _sentVolume = 0;
-                }
-            };
+            OnReceived?.Invoke(_result);
+
+            return _result;
         }
     }
 }

@@ -2,59 +2,24 @@
 {
     public class ControlCenter
     {
-        public delegate void ReceiveMessageHandler(Message message);
-        public event ReceiveMessageHandler? OnReceiveMessage;
-        public event ReceiveMessageHandler? OnIgnoreMessage;
-        public int ReceivedMessages { get; private set; } = 0;
-        public int IgnoredMessages { get; private set; } = 0;
+        public Queue<Satellite> ServiceDemanded = new();
 
-        public Queue<(Microcontroller, Pipe)> ServiceRequestors = new();
-        public int ServiceDelay { get; set; } = 350;
+        public void DemandService(Satellite satellite) => ServiceDemanded.Enqueue(satellite);
 
-        public readonly List<(Microcontroller, Pipe)> Satellites = new();
-        private readonly Clock _clock;
-
-        public ControlCenter(Clock clock)
+        public async Task Service()
         {
-            _clock = clock;
-            Init();
-        }
-
-        public void Register((Microcontroller, Pipe) pair)
-        {
-            pair.Item2.OnReceived += message =>
+            while (ServiceDemanded.TryDequeue(out Satellite satellite))
             {
-                ReceivedMessages++;
-                OnReceiveMessage?.Invoke(message);
-            };
-
-            Satellites.Add(pair);
-            pair.Item1.Memory.OnMessageIgnored += message => 
-            {
-                IgnoredMessages++;
-                OnIgnoreMessage?.Invoke(message);
-            };
-            pair.Item1.Memory.OnServiceDemanded += () => ServiceRequestors.Enqueue(pair);
-        }
-
-        private void Init()
-        {
-            _clock.ExecuteEach(Service, ServiceDelay);
-        }
-
-        private void Service()
-        {
-            while (ServiceRequestors.Count > 0)
-            {
-                SendMessages(ServiceRequestors.Dequeue());
+                await SendMessages(satellite);
             }
         }
 
-        private static void SendMessages((Microcontroller, Pipe) pair)
+        private static async Task SendMessages(Satellite satellite)
         {
-            foreach (var message in pair.Item1.Memory.Release())
+            foreach (var message in satellite.Microcontroller.Memory.Release())
             {
-                pair.Item2.Send(message);
+                await satellite.Pipe.Send(message);
+                await satellite.Pipe.Receive();
             }
         }
     }

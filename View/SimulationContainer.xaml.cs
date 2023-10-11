@@ -64,12 +64,12 @@ namespace MCUNetwork.View
 
         private void PositionSatellites()
         {
-            if (Simulation.ControlCenter.Satellites.Count == 0)
+            if (Simulation.Satellites.Count == 0)
             {
                 return;
             }
 
-            double angleStep = 360d / Simulation.ControlCenter.Satellites.Count;
+            double angleStep = 360d / Simulation.Satellites.Count;
             var satelliteWidth = GetSatelliteWidth();
             double satelliteHeight = satelliteWidth * .75;
             var pipeWidth = GetPipeWidth();
@@ -78,7 +78,7 @@ namespace MCUNetwork.View
 
             double radius = pipeWidth + GetControlCenterWidth() / 2d;
 
-            for (int i = 0; i < Simulation.ControlCenter.Satellites.Count; i++)
+            for (int i = 0; i < Simulation.Satellites.Count; i++)
             {
                 var angleInDegrees = angleStep * i;
                 var angleInRadians = angleInDegrees * radian;
@@ -91,7 +91,7 @@ namespace MCUNetwork.View
                     Width = satelliteWidth,
                     Height = satelliteHeight,
                     Index = i,
-                    Microcontroller = Simulation.ControlCenter.Satellites[i].Item1,
+                    Microcontroller = Simulation.Satellites[i].Microcontroller,
                 };
 
                 var pRadius = radius + satelliteWidth / 2 + satelliteHeight / 2;
@@ -104,7 +104,7 @@ namespace MCUNetwork.View
 
                 var pipe = new PipeView
                 {
-                    Pipe = Simulation.ControlCenter.Satellites[i].Item2,
+                    Pipe = Simulation.Satellites[i].Pipe,
                     Width = pipeWidth,
                     RenderTransform = new TransformGroup()
                     {

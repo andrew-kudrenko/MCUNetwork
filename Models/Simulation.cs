@@ -2,36 +2,27 @@
 {
     public class Simulation
     {
-        public bool IsRunning { get => Clock.IsRunning; }
-        public readonly Clock Clock = new();
+        public readonly List<Satellite> Satellites = new();
+        public readonly Clock Clock;
         public readonly ControlCenter ControlCenter;
-        
-        private readonly SimulationConfig _config;
-        private readonly ExternalDataSource _externalDataSource;
-        private readonly Random _random = new();
+        public bool IsRunning { get => Clock.IsRunning; }
 
-        public Simulation()
+        private readonly ExternalDataSource _externalDataSource;
+        private readonly SimulationConfig _config;
+
+        public Simulation(CreateSimulationOptions options, SimulationConfig config)
         {
-            _config = new() { 
-                MemorySize = 1_000, 
-                MessageLength = 75, 
-                Period = 20, 
-                SatellitesCount = 5, 
-                ServiceDelay = 10, 
-                ServiceThresholdRatio = 0.45, 
-                TransferSpeed = 50,
-            };
-            ControlCenter = new(Clock);
-            _externalDataSource = new(Clock);
+            _config = config;
+            Clock = options.Clock;
+            ControlCenter = options.ControlCenter;
+            _externalDataSource = options.ExternalDataSource;
 
             Init();
         } 
 
         public async Task Run()
         {
-            var running = Clock.Run(86_400L, 10);
-            _externalDataSource.Start();
-            await running;
+            await Clock.Run(_config.Duration);
         }
 
         public void Stop()
@@ -41,13 +32,25 @@
 
         private void Init()
         {
+            InitSatellites();
+            Clock.RunEachTicks(async elapsedTicks => await ControlCenter.Service(), _config.ServiceEach);
+        }
+
+        private void InitSatellites()
+        {
             for (int i = 0; i < _config.SatellitesCount; i++)
             {
-                var satellite = new Microcontroller(_random.Next(180, 1000), _config.ServiceThresholdRatio);
-                var pipe = new Pipe(Clock, 20);
+                var satellite = new Satellite() 
+                {
+                    Microcontroller = new Microcontroller(_config.MemorySize, _config.ThresholdRatio),
+                    Pipe = new Pipe(Clock, _config.TransferSpeed),
+                    ReceiveMessageEach = _config.ReceiveMessageEach,
+                };
 
-                ControlCenter.Register((satellite, pipe));
-                _externalDataSource.Register(satellite);
+                Clock.RunEachTicks(elapsedTicks => satellite.Microcontroller.Memory.TryReceive(_externalDataSource.Send()), satellite.ReceiveMessageEach);
+                satellite.Microcontroller.Memory.OnServiceDemanded += () => ControlCenter.DemandService(satellite);
+                
+                Satellites.Add(satellite);
             }
         }
     }

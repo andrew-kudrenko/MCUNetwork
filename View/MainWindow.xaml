@@ -25,7 +25,7 @@
         <GridSplitter />
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel>
-                <TextBox Text="Simulation Settings" />
+                <view:SettingsView />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Elapsed time (s): " />
                     <TextBlock x:Name="ElapsedTime" />

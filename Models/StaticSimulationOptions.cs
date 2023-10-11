@@ -1,6 +1,6 @@
 ﻿namespace MCUNetwork.Models
 {
-    public struct SimulationConfig
+    public struct StaticSimulationOptions
     {
         public required int Duration { get; set; }
         public required int Delta { get; set; }
@@ -10,6 +10,5 @@
         public required int MemorySize { get; set; }
         public required int TransferSpeed { get; set; }
         public required int ServiceEach { get; set; }
-        public required int ReceiveMessageEach { get; set; }
     }
 }

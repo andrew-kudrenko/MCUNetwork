@@ -10,6 +10,6 @@
              d:DesignWidth="800"
              DataContext="{Binding ElementName=RootView, Path=Simulation}">
     <Canvas x:Name="ContainerView">
-        <local:ControlCenterView x:Name="ControlCenterView" />
+        <local:ControlCenterView x:Name="ControlCenterView" Background="Beige" />
     </Canvas>
 </UserControl>
