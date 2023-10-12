@@ -6,8 +6,10 @@
         mc:Ignorable="d"
         xmlns:view="clr-namespace:MCUNetwork.View"
         Title="MainWindow" 
-        Height="800" 
-        Width="1200"
+        MinHeight="600"
+        MinWidth="900"
+        Height="600"
+        Width="900"
         x:Name="RootView"
         DataContext="{Binding ElementName=RootView}">
     <Grid>
@@ -15,12 +17,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MaxWidth="1200" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="0.35*" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0">
-            <view:SimulationContainer x:Name="SimulationContainer" Simulation="{Binding Path=Simulation}" />
+            <Border Margin="1" BorderThickness="2" BorderBrush="Black">
+                <view:SimulationContainer x:Name="SimulationContainer" Simulation="{Binding Path=Simulation}" />
+            </Border>
         </Grid>
         <GridSplitter />
         <Grid Grid.Row="0" Grid.Column="1">

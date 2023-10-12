@@ -19,7 +19,6 @@
             foreach (var message in satellite.Microcontroller.Memory.Release())
             {
                 await satellite.Pipe.Send(message);
-                await satellite.Pipe.Receive();
             }
         }
     }

@@ -43,21 +43,18 @@
             int finishAt = ElapsedTicks + ticks;
             var source = new TaskCompletionSource<int>();
 
-            if (IsRunning)
+            Action<int> handler = null!;
+
+            handler = elapsedTicks => 
             {
-                Action<int> handler = null!;
-
-                handler = elapsedTicks => 
+                if (elapsedTicks >= finishAt)
                 {
-                    if (elapsedTicks >= finishAt)
-                    {
-                        OnNextTick -= handler;
-                        source.SetResult(elapsedTicks);
-                    }
-                };
+                    OnNextTick -= handler;
+                    source.SetResult(elapsedTicks);
+                }
+            };
 
-                OnNextTick += handler;
-            }
+            OnNextTick += handler;
 
             return source.Task;
         }
@@ -68,7 +65,7 @@
             OnNextTick = null;
         }
 
-        public void ScheduleEach(Action<int> action, int eachTicks)
+        public void ScheduleEach(Action<int> action, int eachTicks = 1)
         {
             long last = ElapsedTicks;
 

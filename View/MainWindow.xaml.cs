@@ -31,7 +31,7 @@ namespace MCUNetwork
 
         private async Task OnClickRun()
         {
-            Simulation.Clock.ScheduleEach(elapsedTicks => ElapsedTime.Text = elapsedTicks.ToString(), 1);
+            Simulation.Clock.ScheduleEach(elapsedTicks => ElapsedTime.Text = elapsedTicks.ToString());
             await Simulation.Run();
         }
     }

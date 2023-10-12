@@ -5,7 +5,6 @@
         public event Action<Message>? OnSent;
         public event Action<Message>? OnReceived;
 
-        private Message? _result;
         private readonly Clock _clock;
         private readonly double _speed;
         private double _sent = 0;
@@ -18,10 +17,8 @@
 
         public async Task Send(Message message)
         {
-            OnSent?.Invoke(message);
-
             _sent = 0;
-            _result = null;
+            OnSent?.Invoke(message);
 
             while (_sent < message.Size)
             {
@@ -29,19 +26,7 @@
                 await _clock.Wait();
             }
 
-            _result = message;
-        }
-
-        public async Task<Message> Receive()
-        {
-            while (_result is null)
-            {
-                await _clock.Wait();
-            }
-
-            OnReceived?.Invoke(_result);
-
-            return _result;
+            OnReceived?.Invoke(message);
         }
     }
 }

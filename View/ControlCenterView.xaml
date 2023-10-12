@@ -3,23 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d"
              BorderThickness="1"
+             BorderBrush="Red"
              d:DesignHeight="100" 
-             d:DesignWidth="150">
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Done: " Foreground="DarkGreen" />
-                <TextBlock x:Name="ReceivedMessages" Text="0" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Missed: " Foreground="DarkRed" />
-                <TextBlock x:Name="IgnoredMessages" Text="0" />
-            </StackPanel>
-        </StackPanel>
-        <Image Source="/Assets/Computer.png" MaxWidth="75" />
+             d:DesignWidth="100">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Image Source="/Assets/Computer.png" MaxWidth="70" MaxHeight="70" />
     </StackPanel>
 </UserControl>
