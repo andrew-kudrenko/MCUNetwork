@@ -6,10 +6,10 @@
         mc:Ignorable="d"
         xmlns:view="clr-namespace:MCUNetwork.View"
         Title="MainWindow" 
+        MinWidth="800"
         MinHeight="600"
-        MinWidth="900"
-        Height="600"
         Width="900"
+        Height="650"
         x:Name="RootView"
         DataContext="{Binding ElementName=RootView}">
     <Grid>

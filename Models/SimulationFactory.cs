@@ -34,7 +34,7 @@
                     Delta = 10,
                     MemorySize = 800,
                     MessageSize = 200,
-                    SatellitesCount = 7,
+                    SatellitesCount = 5,
                     ServiceEach = 10,
                     ThresholdRatio = .6,
                     TransferSpeed = 50,

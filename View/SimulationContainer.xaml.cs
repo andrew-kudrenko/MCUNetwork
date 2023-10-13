@@ -28,6 +28,26 @@ namespace MCUNetwork.View
         public SimulationContainer()
         {
             InitializeComponent();
+
+            SizeChanged += (sender, args) => OnResize();
+        }
+
+        private void OnResize()
+        {
+            if (IsLoaded && ActualWidth > 0 && ActualHeight > 0)
+            {
+                UpdateCenter();
+
+                ControlCenterView.Width = GetControlCenterWidth();
+
+                var microcontrollerWidth = GetMicrocontrollerWidth();
+                _microcontrollerViews.ForEach(view => view.Width = microcontrollerWidth);
+
+                var pipeWidth = GetPipeWidth();
+                _pipeViews.ForEach(view => view.Width = pipeWidth);
+
+                PositionChildren();
+            }
         }
 
         private static void OnChangeSimulation(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -44,7 +64,7 @@ namespace MCUNetwork.View
             _pipeViews.Clear();
             _microcontrollerViews.Clear();
 
-            _center = new Point(ActualWidth / 2, ActualHeight / 2);
+            UpdateCenter();
 
             AddControlCenter();
             AddPipeViews();
@@ -52,7 +72,14 @@ namespace MCUNetwork.View
 
             _angleFraction = 360d / Simulation.Satellites.Count;
             Arrange(new(DesiredSize));
-                
+
+            PositionChildren();
+        }
+
+        private void UpdateCenter() => _center = new Point(ActualWidth / 2, ActualHeight / 2);
+
+        private void PositionChildren()
+        {
             PositionControlCenter();
             PositionPipes();
             PositionMicrocontrollers();
@@ -67,11 +94,13 @@ namespace MCUNetwork.View
             };
         }
 
-        private int GetControlCenterWidth() => Math.Max((int)(ActualWidth / 6), 120);
+        private int GetControlCenterWidth() => GetValueBetween(120, (int)(ActualWidth / 6), 180);
 
-        private int GetMicrocontrollerWidth() => Math.Max((int)(ActualWidth / 6), 110);
+        private int GetMicrocontrollerWidth() => GetValueBetween(110, (int)(ActualWidth / 6), 150);
 
-        private int GetPipeWidth() => Math.Max((int)(ActualWidth / 10), 90);
+        private int GetPipeWidth() => GetValueBetween(90, (int)(ActualWidth / 10), 200);
+
+        private static int GetValueBetween(int min, int actual, int max) => Math.Min(max, Math.Max(actual, min));
 
         private void AddControlCenter()
         {
