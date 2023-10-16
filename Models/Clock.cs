@@ -67,14 +67,14 @@
 
         public void ScheduleEach(Action<int> action, int eachTicks = 1)
         {
-            long last = ElapsedTicks;
+            long nowTicks = ElapsedTicks;
 
             OnNextTick += elapsedTicks =>
             {
-                if (elapsedTicks - eachTicks >= last)
+                if (elapsedTicks - eachTicks >= nowTicks)
                 {
                     action.Invoke(elapsedTicks);
-                    last = elapsedTicks;
+                    nowTicks = elapsedTicks;
                 }
             };
         }

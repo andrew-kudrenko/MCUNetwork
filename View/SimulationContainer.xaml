@@ -3,13 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MCUNetwork.View"
              mc:Ignorable="d" 
              x:Name="RootView"
              d:DesignHeight="450" 
              d:DesignWidth="800"
              DataContext="{Binding ElementName=RootView, Path=Simulation}">
-    <Canvas x:Name="ContainerView">
-        <local:ControlCenterView x:Name="ControlCenterView" />
-    </Canvas>
+    <Canvas x:Name="ContainerView" />
 </UserControl>

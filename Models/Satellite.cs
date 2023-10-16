@@ -4,6 +4,5 @@
     {
         public required Microcontroller Microcontroller;
         public required Pipe Pipe;
-        public required int ReceiveMessageEach;
     }
 }

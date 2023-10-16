@@ -9,6 +9,7 @@
         public required double ThresholdRatio { get; set; }
         public required int MemorySize { get; set; }
         public required int TransferSpeed { get; set; }
-        public required int ServiceEach { get; set; }
+        public required int ServiceOn { get; set; }
+        public required int ReceiveMessageOn { get; set; }
     }
 }

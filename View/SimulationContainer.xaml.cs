@@ -16,6 +16,7 @@ namespace MCUNetwork.View
 
         private readonly List<PipeView> _pipeViews = new();
         private readonly List<MicrocontrollerView> _microcontrollerViews = new();
+        private readonly ControlCenterView ControlCenterView = new();
         private Point _center;
         private double _angleFraction;
 
@@ -28,7 +29,6 @@ namespace MCUNetwork.View
         public SimulationContainer()
         {
             InitializeComponent();
-
             SizeChanged += (sender, args) => OnResize();
         }
 
@@ -107,6 +107,8 @@ namespace MCUNetwork.View
             ControlCenterView.ControlCenter = Simulation.ControlCenter;
             ControlCenterView.Width = GetControlCenterWidth();
             ControlCenterView.RenderTransformOrigin = new(.5, .5);
+
+            ContainerView.Children.Add(ControlCenterView);
         }
 
         private void AddMicrocontrollerViews()

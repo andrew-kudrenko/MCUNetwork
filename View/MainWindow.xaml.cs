@@ -7,13 +7,28 @@ namespace MCUNetwork
     {
         public Simulation Simulation;
 
-        private readonly SimulationFactory _factory = new();
+        private readonly StaticSimulationOptions _simulationOptions;
+        private readonly SimulationFactory _factory;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Simulation = _factory.Create();
+            _simulationOptions = new()
+            {
+                Duration = 86_400,
+                Delta = 10,
+                MemorySize = 1000,
+                MessageSize = 200,
+                ThresholdRatio = .6,
+                SatellitesCount = 7,
+                ServiceOn = 10,
+                TransferSpeed = 50,
+                ReceiveMessageOn = 45,
+            };
+            _factory = new(_simulationOptions);
+
+            Simulation = _factory.Create(SimulationKind.Static);
             Init();
         }
 
@@ -31,8 +46,8 @@ namespace MCUNetwork
 
         private async Task OnClickRun()
         {
-            Simulation.Clock.ScheduleEach(elapsedTicks => ElapsedTime.Text = elapsedTicks.ToString());
-            await Simulation.Run();
+            Simulation.Clock.ScheduleEach(elapsedTicks => ElapsedTime.Text = (elapsedTicks * Simulation.Clock.Delta).ToString());
+            await Simulation.Run(_simulationOptions.Duration);
         }
     }
 }

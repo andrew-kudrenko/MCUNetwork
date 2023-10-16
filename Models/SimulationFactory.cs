@@ -2,46 +2,17 @@
 {
     public class SimulationFactory
     {
+        private readonly Dictionary<SimulationKind, CreateSimulationStrategy> _createStrategies;
         private readonly StaticSimulationOptions _options;
 
-        public SimulationFactory()
+        public SimulationFactory(StaticSimulationOptions options)
         {
-            _options = new()
-            {
-                Duration = 86_400,
-                Delta = 10,
-                MemorySize = 1000,
-                MessageSize = 200,
-                ThresholdRatio = .6,
-                SatellitesCount = 7,
-                ServiceEach = 10,
-                TransferSpeed = 50,
+            _options = options;
+            _createStrategies = new() { 
+                { SimulationKind.Static, new CreateStaticSimulationStrategy(_options) } 
             };
         }
 
-        public Simulation Create()
-        {
-            var simulation = new Simulation(
-                new()
-                {
-                    Clock = new() { Delay = 1, Delta = _options.Delta },
-                    ControlCenter = new(),
-                    ExternalDataSource = new(new StaticMessageGenerator() { Size = _options.MessageSize }),
-                }, 
-                new()
-                { 
-                    Duration = 86_400,
-                    Delta = 10,
-                    MemorySize = 800,
-                    MessageSize = 200,
-                    SatellitesCount = 5,
-                    ServiceEach = 10,
-                    ThresholdRatio = .6,
-                    TransferSpeed = 50,
-                    ReceiveMessageEach = 100,
-                });
-
-            return simulation;
-        }
+        public Simulation Create(SimulationKind kind) => _createStrategies[kind].Create();
     }
 }
