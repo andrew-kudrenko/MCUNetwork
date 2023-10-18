@@ -45,25 +45,16 @@ namespace MCUNetwork.View
                     view.Messages.Clear();
                 }
 
-                view.SizeText.Text = microcontroller.Memory.Size.ToString();
+                view.SizeText.Text = microcontroller.Size.ToString();
 
-                microcontroller.Memory.OnMessageReceived += message =>
+                microcontroller.OnMessageReceived += message =>
                 {
                     view.Messages.Add(message);
                     UpdateView(view, microcontroller);
                 };
-
-                microcontroller.Memory.OnServiceDemanded += () => 
-                {
-                    view.MemoryBar.Foreground = Brushes.Yellow;
-                };
-
-                microcontroller.Memory.OnMessageIgnored += _ =>
-                {
-                    view.MemoryBar.Foreground = Brushes.Red;
-                };
-
-                microcontroller.Memory.OnServiceIsDone += () =>
+                microcontroller.OnServiceDemanded += () => view.MemoryBar.Foreground = Brushes.Yellow;
+                microcontroller.OnMessageIgnored += _ => view.MemoryBar.Foreground = Brushes.Red;
+                microcontroller.OnServiceIsDone += () =>
                 {
                     view.MemoryBar.Foreground = Brushes.Green;
                     view.Messages.Clear();
@@ -75,10 +66,10 @@ namespace MCUNetwork.View
 
         private static void UpdateView(MicrocontrollerView view, Microcontroller microcontroller)
         {
-            view.MemoryBar.Value = microcontroller.Memory.BusyAsPercents;
-            view.MessageCount.Text = microcontroller.Memory.MessagesCount.ToString();
-            view.BusyPercentText.Text = microcontroller.Memory.BusyAsPercents.ToString("N2");
-            view.BusyMbText.Text = microcontroller.Memory.Busy.ToString();
+            view.MemoryBar.Value = microcontroller.BusyAsPercents;
+            view.MessageCount.Text = microcontroller.CurrentMessagesCount.ToString();
+            view.BusyPercentText.Text = microcontroller.BusyAsPercents.ToString();
+            view.BusyMbText.Text = microcontroller.Busy.ToString();
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     public class ControlCenter
     {
+        public readonly MessageCounter MessageCounter = new();
+
         public Queue<Satellite> ServiceDemanded = new();
 
         public void DemandService(Satellite satellite) => ServiceDemanded.Enqueue(satellite);
@@ -16,7 +18,7 @@
 
         private static async Task SendMessages(Satellite satellite)
         {
-            foreach (var message in satellite.Microcontroller.Memory.Release())
+            foreach (var message in satellite.Microcontroller.Release())
             {
                 await satellite.Pipe.Send(message);
             }

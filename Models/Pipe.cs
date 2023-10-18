@@ -23,7 +23,7 @@
             while (_sent < message.Size)
             {
                 _sent += _speed;
-                await _clock.Wait();
+                await _clock.WaitTicks();
             }
 
             OnReceived?.Invoke(message);

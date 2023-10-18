@@ -4,10 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
+             x:Name="Root"
+             Background="White"
+             DataContext="{Binding ElementName=Root}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
     <StackPanel x:Name="SimulationProperties">
         <TextBlock Text="Properties" FontSize="16" FontWeight="Bold" />
-        
+
+        <Label Target="{Binding Path=DurationInput}" Content="Длительность" />
+        <TextBox x:Name="DurationInput" Text="{Binding Path=Value.Duration}" />
+
+        <Label Target="{Binding Path=DeltaInput}" Content="Дельта" />
+        <TextBox x:Name="DeltaInput" Text="{Binding Path=Value.Delta}" />
+
+        <Label Target="{Binding Path=MemorySizeInput}" Content="Размер памяти" />
+        <TextBox x:Name="MemorySizeInput" Text="{Binding Path=Value.MemorySize}" />
+
+        <Label Target="{Binding Path=MessageSizeInput}" Content="Размер сообщения" />
+        <TextBox x:Name="MessageSizeInput" Text="{Binding Path=Value.MessageSize}" />
+
+        <Label Target="{Binding Path=SatellitesCountInput}" Content="Количество контроллеров" />
+        <TextBox x:Name="SatellitesCountInput" Text="{Binding Path=Value.SatellitesCount}" />
+
+        <Label Target="{Binding Path=ReceiveMessageOnInput}" Content="Интервал получения сообщения" />
+        <TextBox x:Name="ReceiveMessageOnInput" Text="{Binding Path=Value.ReceiveMessageOn}" />
+
+        <Label Target="{Binding Path=ServiceOnInput}" Content="Интервал обслуживания" />
+        <TextBox x:Name="ServiceOnInput" Text="{Binding Path=Value.ServiceOn}" />
+
+        <Label Target="{Binding Path=ThresholdRatioInput}" Content="Порог обслуживания" />
+        <TextBox x:Name="ThresholdRatioInput" Text="{Binding Path=Value.ThresholdRatio}" />
+
+        <Label Target="{Binding Path=TransferSpeedInput}" Content="Скорость передачи данных" />
+        <TextBox x:Name="TransferSpeedInput" Text="{Binding Path=Value.TransferSpeed}" />
     </StackPanel>
 </UserControl>

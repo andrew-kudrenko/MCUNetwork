@@ -2,8 +2,10 @@
 {
     public class StaticMessageGenerator : IMessageGenerator
     {
-        public int Size { get; set; }
+        private readonly int _size;
 
-        public Message Generate() => new(Size);
+        public StaticMessageGenerator(int size) => _size = size;
+
+        public Message Generate() => new(_size);
     }
 }

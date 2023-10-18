@@ -38,7 +38,7 @@
             }
         }
 
-        public Task Wait(int ticks = 1)
+        public Task WaitTicks(int ticks = 1)
         {
             int finishAt = ElapsedTicks + ticks;
             var source = new TaskCompletionSource<int>();
@@ -65,16 +65,30 @@
             OnNextTick = null;
         }
 
-        public void ScheduleEach(Action<int> action, int eachTicks = 1)
+        public void OnTick(Action<int> action, int ticks = 1)
         {
-            long nowTicks = ElapsedTicks;
+            int now = ElapsedTicks;
 
             OnNextTick += elapsedTicks =>
             {
-                if (elapsedTicks - eachTicks >= nowTicks)
+                if (elapsedTicks - ticks >= now)
                 {
-                    action.Invoke(elapsedTicks);
-                    nowTicks = elapsedTicks;
+                    action(elapsedTicks);
+                    now = elapsedTicks;
+                }
+            };
+        }
+
+        public void OnTime(Action<int> action, int time = 1)
+        {
+            int now = ElapsedTime;
+
+            OnNextTick += elapsedTicks =>
+            {
+                if (ElapsedTime - time >= now)
+                {
+                    action(ElapsedTime);
+                    now = ElapsedTime;
                 }
             };
         }

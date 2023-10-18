@@ -10,7 +10,7 @@
              Background="Beige"
              DataContext="{Binding ElementName=Root}"
              d:DesignHeight="100" 
-             d:DesignWidth="120">
+             d:DesignWidth="140">
     <Grid Margin="2">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -33,23 +33,24 @@
                     Margin="5, 0, 0, 0" 
                     VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="# " FontWeight="Black" />
-                    <TextBlock Text="{Binding Path=Index}" FontWeight="Black" />
+                    <TextBlock FontWeight="Black">
+                        <Run Text="#" />
+                        <Run Text="{Binding Path=Index}" />
+                    </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Size: " />
-                    <TextBlock x:Name="SizeText" Text="0" FontWeight="Bold" />
-                    <TextBlock Text="MB" />
+                    <TextBlock>
+                        <Run x:Name="SizeText" Text="0" FontWeight="Bold" />
+                        <Run Text="Б" />
+                    </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Busy: " />
-                    <TextBlock x:Name="BusyPercentText" Text="0" FontWeight="Bold" />
-                    <TextBlock Text="%" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Busy: " />
-                    <TextBlock x:Name="BusyMbText" FontWeight="Bold" />
-                    <TextBlock Text="MB" />
+                    <TextBlock>
+                        <Run x:Name="BusyMbText" Text="0" FontWeight="Bold" />
+                        <Run Text="Б /" />
+                        <Run x:Name="BusyPercentText" Text="0" FontWeight="Bold" />
+                        <Run Text="%" />
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>

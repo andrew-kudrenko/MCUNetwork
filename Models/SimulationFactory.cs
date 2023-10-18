@@ -3,13 +3,15 @@
     public class SimulationFactory
     {
         private readonly Dictionary<SimulationKind, CreateSimulationStrategy> _createStrategies;
-        private readonly StaticSimulationOptions _options;
+        private readonly StaticSimulationOptions _staticOptions;
+        private readonly DynamicSimulationOptions _dynamicOptions;
 
         public SimulationFactory(StaticSimulationOptions options)
         {
-            _options = options;
+            _staticOptions = options;
             _createStrategies = new() { 
-                { SimulationKind.Static, new CreateStaticSimulationStrategy(_options) } 
+                { SimulationKind.Static, new CreateStaticSimulationStrategy(_staticOptions) },
+                { SimulationKind.Dynamic, new CreateDynamicSimulationStrategy(_dynamicOptions) }
             };
         }
 

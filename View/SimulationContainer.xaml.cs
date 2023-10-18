@@ -55,12 +55,20 @@ namespace MCUNetwork.View
             if (sender is SimulationContainer view)
             {
                 view.DataContext = view.Simulation;
-                view.Loaded += (sender, args) => view.Init();
+
+                if (view.IsLoaded)
+                {
+                    view.Init();
+                } else
+                {
+                    view.Loaded += (sender, args) => view.Init();
+                }
             }
         }
 
         private void Init()
         {
+            ContainerView.Children.Clear();
             _pipeViews.Clear();
             _microcontrollerViews.Clear();
 

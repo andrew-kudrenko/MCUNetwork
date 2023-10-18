@@ -14,7 +14,7 @@
         protected override ControlCenter CreateControlCenter() => new();
 
         protected override ExternalDataSource CreateExternalDataSource() => 
-            new(new StaticMessageGenerator() { Size = _options.MessageSize });
+            new(new StaticMessageGenerator(_options.MessageSize));
 
         protected override int GetMicrocontrollerMemorySize() => _options.MemorySize;
 

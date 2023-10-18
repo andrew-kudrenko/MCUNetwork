@@ -23,18 +23,18 @@
 
         <Grid Grid.Row="0" Grid.Column="0">
             <Border Margin="1" BorderThickness="2" BorderBrush="Black">
-                <view:SimulationContainer x:Name="SimulationContainer" Simulation="{Binding Path=Simulation}" />
+                <view:SimulationContainer x:Name="SimulationContainer" />
             </Border>
         </Grid>
         <GridSplitter />
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel>
-                <view:SettingsView />
+                <view:SettingsView x:Name="SettingsPanel" />
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Elapsed time (s): " />
+                    <TextBlock Text="Минувшее время, с: " />
                     <TextBlock x:Name="ElapsedTime" />
                 </StackPanel>
-                <Button Name="RunButton" Content="Run" />
+                <Button Name="RunButton" Content="Пуск" />
                 <Slider x:Name="SpeedSlider" Minimum="0" Maximum="100" Value="50" />
             </StackPanel>
         </Grid>
