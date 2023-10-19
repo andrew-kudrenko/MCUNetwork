@@ -34,7 +34,7 @@ namespace MCUNetwork.View
 
         private void OnResize()
         {
-            if (IsLoaded && ActualWidth > 0 && ActualHeight > 0)
+            if (CanBeResized())
             {
                 UpdateCenter();
 
@@ -49,6 +49,8 @@ namespace MCUNetwork.View
                 PositionChildren();
             }
         }
+
+        private bool CanBeResized() => Simulation is not null && IsLoaded && ActualWidth > 0 && ActualHeight > 0;
 
         private static void OnChangeSimulation(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
@@ -79,7 +81,7 @@ namespace MCUNetwork.View
             AddMicrocontrollerViews();
 
             _angleFraction = 360d / Simulation.Satellites.Count;
-            Arrange(new(DesiredSize));
+            UpdateLayout();
 
             PositionChildren();
         }
