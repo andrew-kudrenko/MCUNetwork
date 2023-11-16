@@ -2,8 +2,6 @@
 {
     public class ControlCenter
     {
-        public readonly MessageCounter MessageCounter = new();
-
         public Queue<Satellite> ServiceDemanded = new();
 
         public void DemandService(Satellite satellite) => ServiceDemanded.Enqueue(satellite);

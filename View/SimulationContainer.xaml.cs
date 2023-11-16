@@ -1,7 +1,7 @@
-﻿using MCUNetwork.Models;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using MCUNetwork.Models;
 
 namespace MCUNetwork.View
 {
@@ -60,15 +60,15 @@ namespace MCUNetwork.View
 
                 if (view.IsLoaded)
                 {
-                    view.Init();
+                    view.UpdateView();
                 } else
                 {
-                    view.Loaded += (sender, args) => view.Init();
+                    view.Loaded += (sender, args) => view.UpdateView();
                 }
             }
         }
 
-        private void Init()
+        private void UpdateView()
         {
             ContainerView.Children.Clear();
             _pipeViews.Clear();

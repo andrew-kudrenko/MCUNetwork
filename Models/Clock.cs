@@ -3,6 +3,7 @@
     public class Clock
     {
         public event Action<int>? OnNextTick;
+        public event Action? OnEnd;
 
         public int ElapsedTicks { get; private set; }
         public int ElapsedTime { get; private set; }
@@ -34,6 +35,7 @@
                 } else
                 {
                     IsRunning = false;
+                    OnEnd?.Invoke();
                 }
             }
         }

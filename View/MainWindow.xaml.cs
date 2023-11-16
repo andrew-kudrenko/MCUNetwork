@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using MCUNetwork.Models;
+using MCUNetwork.Trace;
 
 namespace MCUNetwork
 {
@@ -9,6 +11,7 @@ namespace MCUNetwork
         public Simulation? Simulation;
 
         private readonly SimulationFactory _factory;
+        private readonly SimulationCSVSerializer _csvSerializer = new();
 
         public MainWindow()
         {
@@ -16,15 +19,15 @@ namespace MCUNetwork
 
             StaticSimulationOptions = new()
             {
-                Duration = 86_400,
+                Duration = 12_000,
                 Delta = 10,
-                MemorySize = 1000,
-                MessageSize = 200,
-                ThresholdRatio = .6,
-                SatellitesCount = 7,
-                ServiceOn = 10,
-                TransferSpeed = 50,
-                ReceiveMessageOn = 60,
+                MemorySize = 550,
+                MessageSize = 176,
+                ThresholdRatio = .75,
+                SatellitesCount = 3,
+                ServiceOn = 180,
+                TransferSpeed = 90,
+                ReceiveMessageOn = 42,
             };
 
             _factory = new(StaticSimulationOptions);
@@ -40,22 +43,45 @@ namespace MCUNetwork
             if (Simulation is not null && Simulation.IsRunning)
             {
                 Simulation.Stop();
-                Simulation = null!;
+                Simulation = null;
 
-                RunButton.Content = "Пуск";
+                SetRunButtonState(false);
             } else
             {
-                RunButton.Content = "Остановка";
+                SetRunButtonState(true);
+                InitSimulation();
 
-                Simulation = _factory.Create(SimulationKind.Static);
-                Simulation.Clock.Delay = GetClockDelay();
-                Simulation.Clock.OnTick(_ => ElapsedTime.Text = $"{Simulation.Clock.ElapsedTime} / {StaticSimulationOptions.Duration}");
+                _csvSerializer.Simulation = Simulation;
 
-                SimulationContainer.Simulation = Simulation;
-                SpeedSlider.ValueChanged += (sender, args) => Simulation.Clock.Delay = GetClockDelay();
+                if (!Directory.Exists("Reports"))
+                {
+                    Directory.CreateDirectory("Reports");
+                }
 
-                await Simulation.Run(StaticSimulationOptions.Duration);
+                using var logStream = new FileStream("Reports/Report.csv", FileMode.OpenOrCreate, FileAccess.Write);
+                using var logWriter = new StreamWriter(logStream);
+
+                await logWriter.WriteAsync(_csvSerializer.GetTitle());
+                Simulation!.Clock.OnTick(async _ => await logWriter.WriteLineAsync(_csvSerializer.Serialize()));
+
+                await Simulation!.Run(StaticSimulationOptions.Duration);
             }
+        }
+
+        private void InitSimulation()
+        {
+            Simulation = _factory.Create(SimulationKind.Static);
+            Simulation.Clock.Delay = GetClockDelay();
+            Simulation.Clock.OnTick(_ => ElapsedTime.Text = $"{Simulation.Clock.ElapsedTime} / {StaticSimulationOptions.Duration}");
+            Simulation.Clock.OnEnd += () => SetRunButtonState(false);
+
+            SimulationContainer.Simulation = Simulation;
+            SpeedSlider.ValueChanged += (sender, args) => Simulation.Clock.Delay = GetClockDelay();
+        }
+
+        private void SetRunButtonState(bool isRunning)
+        {
+            RunButton.Content = isRunning ? "Стоп" : "Пуск";
         }
     }
 }

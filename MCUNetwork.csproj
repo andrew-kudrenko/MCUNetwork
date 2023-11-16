@@ -17,6 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Reports\**" />
+    <EmbeddedResource Remove="Reports\**" />
+    <None Remove="Reports\**" />
+    <Page Remove="Reports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\Computer.png" />
     <None Remove="Assets\Message.png" />
     <None Remove="Assets\Microcontroller.png" />
