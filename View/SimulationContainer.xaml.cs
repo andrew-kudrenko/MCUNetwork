@@ -129,6 +129,7 @@ namespace MCUNetwork.View
                 {
                     Index = i + 1,
                     Microcontroller = Simulation.Satellites[i].Microcontroller,
+                    Pipe = _pipeViews[i].Pipe,
                     Width = GetMicrocontrollerWidth(),
                 };
 

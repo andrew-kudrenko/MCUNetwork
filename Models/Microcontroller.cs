@@ -9,7 +9,7 @@
 
         public readonly double Size;
         public readonly MessageCounter MessageCounter = new();
-        public double Busy { get; private set; }
+        public double Busy { get => _messages.Sum(m => m.Size); }
         public bool IsServiceDemanded { get; private set; }
         public double FreeSpace { get => Size - Busy; }
         public double BusyAsPercents { get => Busy / (Size / 100); }
@@ -29,7 +29,6 @@
             if (FreeSpace >= message.Size)
             {
                 _messages.Enqueue(message);
-                Busy += message.Size;
 
                 if (Busy >= _serviceThreshold)
                 {
@@ -56,7 +55,6 @@
                 yield return _messages.Dequeue();
             }
 
-            Busy = 0;
             IsServiceDemanded = false;
             OnServiceIsDone?.Invoke();
         }

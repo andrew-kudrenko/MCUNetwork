@@ -4,12 +4,12 @@
     {
         public event Action<Message>? OnSent;
         public event Action<Message>? OnReceived;
+        public event Action<int>? OnProgress;
 
         private readonly Clock _clock;
-        private readonly double _speed;
-        private double _sent = 0;
+        private readonly int _speed;
 
-        public Pipe(Clock clock, double capacity)
+        public Pipe(Clock clock, int capacity)
         {
             _clock = clock;
             _speed = capacity;
@@ -17,12 +17,15 @@
 
         public async Task Send(Message message)
         {
-            _sent = 0;
             OnSent?.Invoke(message);
 
-            while (_sent < message.Size)
+            while (message.Size > 0)
             {
-                _sent += _speed;
+                var sizeBefore = message.Size;
+                message.Size = Math.Max(0, message.Size - _speed);
+
+                OnProgress?.Invoke(sizeBefore - message.Size);
+
                 await _clock.WaitTicks();
             }
 

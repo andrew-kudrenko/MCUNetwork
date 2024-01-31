@@ -13,14 +13,14 @@ namespace MCUNetwork.Trace
             var satellitesRange = Enumerable.Range(0, Simulation.Satellites.Count);
 
             return Join(
-                "Elapsed time(s)",
-                "Total",
-                "Received",
-                "Ignored",
-                "Ignored(%)",
-                Join(satellitesRange.Select(i => $"Busy #{i}(%)")),
-                Join(satellitesRange.Select(i => $"Ignored #{i}(%)")),
-                Join(satellitesRange.Select(i => $"Service Demanded #{i}(%)"))
+                "T",
+                "СВ",
+                "СП",
+                "СУ",
+                "СУ%",
+                Join(satellitesRange.Select(i => $"З{i}(%)")),
+                Join(satellitesRange.Select(i => $"У{i}(%)")),
+                Join(satellitesRange.Select(i => $"ЗС{i}(%)"))
             );
         }
 

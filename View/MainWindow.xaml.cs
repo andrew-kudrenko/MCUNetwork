@@ -19,15 +19,15 @@ namespace MCUNetwork
 
             StaticSimulationOptions = new()
             {
-                Duration = 12_000,
+                Duration = 5_000,
                 Delta = 10,
-                MemorySize = 550,
-                MessageSize = 176,
-                ThresholdRatio = .75,
-                SatellitesCount = 3,
-                ServiceOn = 180,
-                TransferSpeed = 90,
-                ReceiveMessageOn = 42,
+                MemorySize = 1_000,
+                MessageSize = 200,
+                ThresholdRatio = .6,
+                SatellitesCount = 5,
+                ServiceOn = 10,
+                TransferSpeed = 50,
+                ReceiveMessageOn = 20,
             };
 
             _factory = new(StaticSimulationOptions);
@@ -51,7 +51,7 @@ namespace MCUNetwork
                 SetRunButtonState(true);
                 InitSimulation();
 
-                _csvSerializer.Simulation = Simulation;
+                _csvSerializer.Simulation = Simulation!;
 
                 if (!Directory.Exists("Reports"))
                 {

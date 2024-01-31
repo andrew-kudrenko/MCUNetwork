@@ -14,11 +14,25 @@ namespace MCUNetwork.View
             typeof(MicrocontrollerView),
             new PropertyMetadata(null, new(OnChangeMicrocontroller))
         );
+
+        public static readonly DependencyProperty PipeProperty = DependencyProperty.Register(
+            "Pipe",
+            typeof(Pipe),
+            typeof(MicrocontrollerView),
+            new PropertyMetadata(null, new(OnChangePipe))
+        );
+
         public static readonly DependencyProperty IndexProperty = DependencyProperty.Register("Index", typeof(int), typeof(MicrocontrollerView));
 
         public Microcontroller Microcontroller {
-            get => (Microcontroller) GetValue(MicrocontrollerProperty); 
+            get => (Microcontroller)GetValue(MicrocontrollerProperty);
             set => SetValue(MicrocontrollerProperty, value);
+        }
+
+        public Pipe Pipe
+        {
+            get => (Pipe)GetValue(PipeProperty);
+            set => SetValue(PipeProperty, value);
         }
 
         public int Index
@@ -38,7 +52,7 @@ namespace MCUNetwork.View
         {
             if (sender is MicrocontrollerView view)
             {
-                var microcontroller = (Microcontroller) args.NewValue;
+                var microcontroller = (Microcontroller)args.NewValue;
 
                 if (view.Messages.Count > 0)
                 {
@@ -61,6 +75,14 @@ namespace MCUNetwork.View
 
                     UpdateView(view, microcontroller);
                 };
+            }
+        }
+        private static void OnChangePipe(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            if (sender is MicrocontrollerView view)
+            {
+                var pipe = (Pipe) args.NewValue;
+                view.Pipe.OnProgress += _ => UpdateView(view, view.Microcontroller);
             }
         }
 

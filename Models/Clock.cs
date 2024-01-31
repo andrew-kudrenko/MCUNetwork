@@ -67,7 +67,7 @@
             OnNextTick = null;
         }
 
-        public void OnTick(Action<int> action, int ticks = 1)
+        public void OnTick(Action<int> action, int ticks = 0)
         {
             int now = ElapsedTicks;
 
@@ -81,7 +81,7 @@
             };
         }
 
-        public void OnTime(Action<int> action, int time = 1)
+        public void OnTime(Action<int> action, int time = 0)
         {
             int now = ElapsedTime;
 

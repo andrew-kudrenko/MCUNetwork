@@ -44,7 +44,7 @@
         protected abstract int GetTransferSpeed();
         protected abstract int GetReceiveMessageOn();
 
-        private void ScheduleService() => clock.OnTick(async _ => await controlCenter.Service(), GetServiceOn());
+        private void ScheduleService() => clock.OnTime(async _ => await controlCenter.Service(), GetServiceOn());
 
         private void InitSatellites()
         {
@@ -56,7 +56,7 @@
                     Pipe = new Pipe(clock, GetTransferSpeed()),
                 };
 
-                clock.OnTick(
+                clock.OnTime(
                     _ => satellite.Microcontroller.TryReceive(externalDataSource.Send()),
                     GetReceiveMessageOn()
                 );
